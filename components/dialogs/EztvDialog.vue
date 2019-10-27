@@ -9,6 +9,12 @@
 					template(v-for='(torrent, index) in torrents')
 						v-divider(v-if='index != 0')
 						v-list-item(:key='torrent.id')
+							v-list-item-action.me-3
+								v-chip(label)
+									span.font-weight-light S
+									span.font-weight-bold.me-1 {{torrent.season.padStart(2, "0")}}
+									span.font-weight-light E
+									span.font-weight-bold {{torrent.episode.padStart(2, "0")}}
 							v-list-item-content
 								v-list-item-title {{torrent.title}}
 								v-list-item-subtitle.overline
