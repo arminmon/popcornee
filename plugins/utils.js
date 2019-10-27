@@ -1,11 +1,6 @@
 export default function({ $vuetify }, inject) {
 	const utils = {
-		gradient: (dir = '', stops = []) => {
-			let rgb = $vuetify.theme.dark ? '66,66,66' : '255,255,255'
-			let points = []
-			for (let stop of stops) points.push(`rgba(${rgb},${stop.alpha}) ${stop.pos}`)
-			return dir != '' && stops.length > 0 ? `${dir}, ${points.join()}` : null
-		},
+		gradient: (dir = '', stops = []) => (dir != '' && stops.length > 0 ? `${dir}, ${stops.map((stop) => `rgba(${$vuetify.theme.dark ? '66,66,66' : '255,255,255'},${stop.alpha}) ${stop.pos}`).join()}` : null),
 		media: {
 			views: {
 				wide: {
