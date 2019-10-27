@@ -22,7 +22,7 @@
 				v-container(fluid fill-height)
 					v-row.fill-height
 						v-col(:align-self='$vuetify.breakpoint.xsOnly && view == "wide" ? "center" : "end"' :class='{"py-0": $vuetify.breakpoint.smAndDown}')
-							h1.ms-1.title.font-weight-bold(:class='[$vuetify.breakpoint.xsOnly ? "subtitle-1" : "title"]') {{media.title || media.original_title || media.name || media.original_name}}
+							h1.title.font-weight-bold(:class='[$vuetify.breakpoint.xsOnly ? "subtitle-1" : "title"]') {{media.title || media.original_title || media.name || media.original_name}}
 							h2.subtitle-2.font-weight-thin(:class='[$vuetify.breakpoint.xsOnly ? "caption" : "subtitle-2"]')
 								span (
 								span(v-if='media.first_air_date') Since 

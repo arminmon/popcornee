@@ -15,7 +15,7 @@ export default {
 
 	plugins: ['~plugins/axios', '~plugins/api', '~plugins/utils'],
 
-	buildModules: ['@nuxtjs/dotenv', '@nuxtjs/vuetify'],
+	buildModules: ['@nuxtjs/dotenv', 'nuxt-webfontloader', '@nuxtjs/vuetify'],
 
 	modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
 
@@ -26,11 +26,19 @@ export default {
 		baseURL: 'http://api.themoviedb.org/3/'
 	},
 
+	webfontloader: {
+		google: {
+			families: ['Dosis:200,300,400,700,800']
+		}
+	},
+
 	vuetify: {
 		treeShake: true,
 		customVariables: ['~/assets/vuetifyVariables.scss'],
 		defaultAssets: {
-			// font: true,
+			font: {
+				family: 'Dosis'
+			},
 			icons: 'mdi'
 		},
 		theme: {

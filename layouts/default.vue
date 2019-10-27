@@ -56,7 +56,7 @@
 										img(v-if='media.poster_path' :src='$store.getters.imgURL(media.poster_path, "poster", 0)')
 										v-icon(v-else style='opacity: .25') mdi-image-off
 									v-list-item-content
-										v-list-item-title {{media.name || media.original_name}}
+										v-list-item-title.font-weight-bold {{media.name || media.original_name}}
 										v-list-item-subtitle.overline.font-weight-bold(v-if='media.first_air_date') Since {{new Date(media.first_air_date).toLocaleDateString("en-US", {year: "numeric", month: "short"})}}
 										v-list-item-subtitle {{media.overview}}
 								//- Movie
@@ -65,7 +65,7 @@
 										img(v-if='media.poster_path' :src='$store.getters.imgURL(media.poster_path, "poster", 0)')
 										v-icon(v-else style='opacity: .25') mdi-image-off
 									v-list-item-content
-										v-list-item-title {{media.title || media.original_title}}
+										v-list-item-title.font-weight-bold {{media.title || media.original_title}}
 										v-list-item-subtitle.overline.font-weight-bold(v-if='media.release_date') {{new Date(media.release_date).toLocaleDateString("en-US", {year: "numeric", month: "short"})}}
 										v-list-item-subtitle {{media.overview}}
 								//- Person
@@ -75,7 +75,7 @@
 											v-img(v-if='media.profile_path' :src='$store.getters.imgURL(media.profile_path, "profile", 1)')
 											v-icon(v-else style='opacity: .25') mdi-account-circle
 										v-list-item-content
-											v-list-item-title {{media.name}} 
+											v-list-item-title.font-weight-bold {{media.name}} 
 											v-list-item-subtitle.overline {{media.known_for_department}}
 											v-list-item-subtitle
 												v-btn(icon x-small @click='dialog = false' nuxt :to='`/people/${media.id}`')
@@ -87,7 +87,7 @@
 												img(v-if='mMedia.poster_path' :src='$store.getters.imgURL(mMedia.poster_path, "poster", 0)')
 												v-icon(v-else style='opacity: .25') mdi-image-off
 											v-list-item-content
-												v-list-item-title {{mMedia.name || mMedia.original_name}}
+												v-list-item-title.font-weight-bold {{mMedia.name || mMedia.original_name}}
 												v-list-item-subtitle.overline.font-weight-bold(v-if='mMedia.first_air_date') Since {{new Date(mMedia.first_air_date).toLocaleDateString("en-US", {year: "numeric", month: "short"})}}
 												v-list-item-subtitle {{mMedia.overview}}
 										//- Movie
@@ -96,7 +96,7 @@
 												img(v-if='mMedia.poster_path' :src='$store.getters.imgURL(mMedia.poster_path, "poster", 0)')
 												v-icon(v-else style='opacity: .25') mdi-image-off
 											v-list-item-content
-												v-list-item-title {{mMedia.title || mMedia.original_title}}
+												v-list-item-title.font-weight-bold {{mMedia.title || mMedia.original_title}}
 												v-list-item-subtitle.overline.font-weight-bold(v-if='mMedia.release_date') {{new Date(mMedia.release_date).toLocaleDateString("en-US", {year: "numeric", month: "short"})}}
 												v-list-item-subtitle {{mMedia.overview}}
 					v-scroll-y-transition
