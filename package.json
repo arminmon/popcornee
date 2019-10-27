@@ -20,7 +20,6 @@
 		"build": "nuxt build",
 		"start": "nuxt start",
 		"generate": "nuxt generate",
-		"heroku-postbuild": "yarn run build",
 		"surge": "surge whoami && nuxt generate && surge dist --domain popcornee.surge.sh"
 	},
 	"dependencies": {
