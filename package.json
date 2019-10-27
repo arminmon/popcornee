@@ -1,0 +1,41 @@
+{
+	"name": "popcornee",
+	"version": "1.0.0",
+	"description": "Movies for your Popcorns.",
+	"keywords": [
+		"movie",
+		"film",
+		"tv",
+		"series",
+		"popcorn"
+	],
+	"author": {
+		"name": "Armin Monirzadeh",
+		"email": "armin.monirzadeh@gmail.com"
+	},
+	"private": true,
+	"license": "UNLICENSED",
+	"scripts": {
+		"dev": "nuxt",
+		"build": "nuxt build",
+		"start": "nuxt start",
+		"generate": "nuxt generate",
+		"heroku-postbuild": "yarn run build",
+		"surge": "surge whoami && nuxt generate && surge dist --domain popcornee.surge.sh"
+	},
+	"dependencies": {
+		"@nuxtjs/axios": "^5.3.6",
+		"@nuxtjs/dotenv": "^1.4.1",
+		"@nuxtjs/pwa": "^3.0.0-0",
+		"nuxt": "^2.10.1"
+	},
+	"devDependencies": {
+		"@nuxtjs/vuetify": "^1.9.0",
+		"pug": "^2.0.4",
+		"pug-plain-loader": "^1.0.0"
+	},
+	"engines": {
+		"node": "^12.12.0",
+		"yarn": "^1.19.1"
+	}
+}
