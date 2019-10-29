@@ -98,7 +98,7 @@
 				return this.media.results ? this.media.results : this.media;
 			}
 		},
-		created() {
+		mounted() {
 			this.reset();
 		}
 	};
