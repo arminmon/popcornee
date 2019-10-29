@@ -8,8 +8,8 @@ export const state = () => ({
 
 /* MUTATIONS (put stuff in store) */
 export const mutations = {
-	SET_DRAWER(state, drawer) {
-		state.drawer = drawer
+	SET_DRAWER(state, value) {
+		state.drawer = value
 	},
 	SET_CONFIGS(state, configs) {
 		state.configs = configs

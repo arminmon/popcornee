@@ -6,16 +6,16 @@
 			fixed
 			:right='$vuetify.rtl'
 			:collapse='collapsed'
-			:clipped-left='!$store.state.drawer && !$vuetify.rtl'
-			:clipped-right='!$store.state.drawer && $vuetify.rtl')
-			v-btn(icon @click='$store.commit("SET_DRAWER", !$store.state.drawer)')
-				v-icon(:class='{"mdi-flip-h": !$store.state.drawer}') mdi-backburger
+			:clipped-left='!drawer && !$vuetify.rtl'
+			:clipped-right='!drawer && $vuetify.rtl')
+			v-btn(icon @click='$store.commit("SET_DRAWER", !drawer)')
+				v-icon(:class='{"mdi-flip-h": !drawer}') mdi-backburger
 			v-toolbar-title Popcornee
 			v-spacer
 			v-btn(icon disabled)
 				v-icon mdi-account-circle
 		//- Navigation Drawer
-		v-navigation-drawer(app :value='$store.state.drawer' width='310' disable-resize-watcher)
+		v-navigation-drawer(v-model='drawer' app width='310' disable-resize-watcher)
 			template(v-slot:prepend)
 				.pa-2
 					v-text-field(
@@ -130,6 +130,12 @@
 			}
 		}),
 		computed: {
+			drawer: {
+				get: ({ $store }) => $store.state.drawer,
+				set(val) {
+					this.$store.commit("SET_DRAWER", val);
+				}
+			},
 			collapsed: ({ $route }) =>
 				$route.path != "/" && $route.path.split("/")[2] != "discover"
 		},
