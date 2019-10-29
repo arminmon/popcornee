@@ -35,9 +35,11 @@
 		v-container(fluid)
 			media-iterator(ref='mediaIterator' :media='discovery' :loading='loading' flat-header default-view='wide' :title='$vuetify.breakpoint.mdAndUp ? "Results" : ""' :dense='queryDrawer' :resource='["discover", "movie"]' :query='query')
 				template(v-slot:header-prepend)
-					v-btn(v-show='$vuetify.breakpoint.smAndDown' text :depressed='queryDrawer' @click='queryDrawer = true')
-						v-icon mdi-filter-variant
-						span Filters
+					v-badge(v-show='$vuetify.breakpoint.smAndDown' overlap :value='withGenres.length + withoutGenres.length > 0')
+						template(v-slot:badge) {{withGenres.length + withoutGenres.length}}
+						v-btn(text :depressed='queryDrawer' @click='queryDrawer = true')
+							v-icon(left) mdi-filter-variant
+							span Filters
 </template>
 
 <script>
