@@ -185,4 +185,7 @@
 			}
 		}
 	}
+	.v-badge__badge {
+		line-height: 1 !important;
+	}
 </style>
