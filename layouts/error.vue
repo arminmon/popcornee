@@ -1,17 +1,16 @@
 <template lang="pug">
-  v-content
-    v-container.fill-height
-      v-row.pb-12(align='center' justify='center')
-        v-card(color='error')
-          v-card-title
-            .display-4.font-weight-bold {{error.statusCode}}
-          v-card-text
-            .overline {{error.message}}
-          v-card-actions
-            v-spacer
-            v-btn(text to='/' nuxt)
-              v-icon(left) mdi-home-import-outline
-              | Go Home
+	v-content
+		v-container.fill-height
+			v-row.pb-12(align='center' justify='center')
+				v-card(color='error')
+					v-card-title
+						span.display-4.font-weight-black {{error.statusCode}}
+					v-card-text.title {{error.message}}
+					v-card-actions
+						v-spacer
+						v-btn(text to='/' nuxt)
+							v-icon(left) mdi-home-import-outline
+							| Go Home
 </template>
 
 <script>
