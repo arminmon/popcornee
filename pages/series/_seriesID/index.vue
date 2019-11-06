@@ -23,7 +23,7 @@
 								h2.subtitle-1.font-weight-light(v-else) (N/A)
 							.overline {{series.number_of_episodes}} {{series.number_of_episodes > 1 ? "Episodes" : "Episode"}} in {{series.number_of_seasons}} {{series.number_of_seasons > 1 ? "Seasons" : "Season"}}
 							.mx-n1.py-2
-								v-chip.ma-1(v-for='genre in series.genres' :key='genre.id' :small='$vuetify.breakpoint.smAndDown' outlined nuxt :to='{ path: "/series/discover", query: {with_genres: genre.id}}') {{genre.name}}
+								v-chip.ma-1(v-for='genre in series.genres' :key='genre.id' :small='$vuetify.breakpoint.smAndDown' outlined nuxt :to='{ path: "/discover/series", query: {with_genres: genre.id}}') {{genre.name}}
 							.d-block(v-if='series.vote_average > 0')
 								v-rating.d-inline(:value='series.vote_average/2' length='5' half-increments readonly :dense='$vuetify.breakpoint.mdAndDown' open-delay='300')
 								.d-inline.overline.px-2
@@ -178,7 +178,7 @@
 				v-container(v-if='series.keywords.results')
 					.px-2
 						.text-center.pb-6.mx-n3
-							v-chip.text-uppercase.ma-3(v-for='keyword in series.keywords.results' :key='keyword.id' label outlined small nuxt :to='{ path: "/series/discover", query: {with_keywords: keyword.id}}') {{keyword.name}}
+							v-chip.text-uppercase.ma-3(v-for='keyword in series.keywords.results' :key='keyword.id' label outlined small nuxt :to='{ path: "/discover/series", query: {with_keywords: keyword.id}}') {{keyword.name}}
 			//- Cast Tab ——————————————————————————————————————————————————————————————————————————— -//
 			v-tab-item(value='tab--cast' v-if='!tabs.cast.disabled')
 				cast-iterator(:cast='series.credits.cast')
