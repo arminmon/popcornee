@@ -26,7 +26,7 @@ export default function({ $axios, env }, inject) {
 					}
 					resolve(response)
 				} catch (error) {
-					reject(error)
+					throw error
 				}
 			}),
 		yts: (imdbID) =>
@@ -36,7 +36,7 @@ export default function({ $axios, env }, inject) {
 					if (response.status == 'ok') resolve(response.data)
 					else throw new Error(response.status_message)
 				} catch (error) {
-					reject(error)
+					throw error
 				}
 			}),
 		eztv: (params) =>
@@ -45,7 +45,7 @@ export default function({ $axios, env }, inject) {
 					let response = await $axios.$get('https://eztv.io/api/get-torrents', { params })
 					resolve(response)
 				} catch (error) {
-					reject(error)
+					throw error
 				}
 			})
 	}
