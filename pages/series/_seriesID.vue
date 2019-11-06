@@ -4,9 +4,7 @@
 
 <script>
 	export default {
-		validate({ params }) {
-			return /^\d+$/.test(params.seriesID);
-		},
+		validate: ({ params }) => /^\d+$/.test(params.seriesID),
 		fetch: async ({ store }) => {
 			await store.dispatch("FETCH_CONFIGS");
 			await store.dispatch("FETCH_GENRES");

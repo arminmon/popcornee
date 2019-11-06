@@ -182,9 +182,7 @@
 			VideosGrid,
 			ReviewsTimeline
 		},
-		validate({ params }) {
-			return /^\d+$/.test(params.movieID);
-		},
+		validate: ({ params }) => /^\d+$/.test(params.movieID),
 		fetch: async ({ store }) => {
 			await store.dispatch("FETCH_CONFIGS");
 			await store.dispatch("FETCH_GENRES");
