@@ -4,9 +4,9 @@
 			template(v-slot:placeholder)
 				v-row.fill-height.ma-0.pa-3(justify='start' align='start')
 					v-progress-circular(indeterminate style='opacity: .25')
-			.d-flex.flex-column.fill-height
-				v-container.fill-height.pt-12
-					v-row.fill-height.pt-12.pb-6(align='center' justify='center')
+			.d-flex.flex-column
+				v-container.pt-12
+					v-row.pt-12.pb-6(align='center' justify='center')
 						v-col(cols='12' sm='3' :order='$vuetify.breakpoint.xsOnly ? "last" : "first"' v-if='company.logo_path')
 							v-img(:src='$store.getters.imgURL(company.logo_path, "logo", 4)')
 						v-col.px-6(cols='12' :sm='company.logo_path ? 9 : 12')
