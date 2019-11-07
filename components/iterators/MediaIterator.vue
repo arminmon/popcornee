@@ -6,9 +6,11 @@
 					v-toolbar-title(v-if='title != ""') {{title}}
 					slot(name='header-prepend')
 					v-spacer
-					v-btn-toggle(v-model='view' mandatory v-if='!hideViews')
+					v-btn-toggle(v-model='view' mandatory v-if='!hideViews' v-show='$vuetify.breakpoint.mdAndUp')
 						v-btn(v-for='(view, key) of $utils.media.views' :key='key' :value='key')
 							v-icon(:class='view.class') {{view.icon}}
+					v-btn(fab small @click='changeView' v-if='!hideViews' v-show='$vuetify.breakpoint.smAndDown')
+						v-icon(:class='$utils.media.views[view].class') {{$utils.media.views[view].icon}}
 					slot(name='header-append')
 		template(v-slot:default='props')
 			v-row(:dense='$store.state.drawer || $vuetify.breakpoint.smAndDown || dense')
@@ -84,6 +86,19 @@
 					console.error(error);
 				} finally {
 					this.fetching = false;
+				}
+			},
+			changeView() {
+				switch (this.view) {
+					case "wide":
+						this.view = "square";
+						break;
+					case "square":
+						this.view = "narrow";
+						break;
+					case "narrow":
+						this.view = "wide";
+						break;
 				}
 			},
 			reset() {
