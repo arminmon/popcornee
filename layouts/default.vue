@@ -32,7 +32,7 @@
 						v-btn(icon @click='search.showModes = !search.showModes')
 							v-scale-transition(leave-absolute)
 								v-icon(v-show='!search.showModes') {{search.mode.icon}}
-							v-fade-transtion(leave-absolute)
+							v-scroll-y-reverse-transition(leave-absolute)
 								v-icon(v-show='search.showModes') mdi-chevron-up
 				v-expand-transition
 					v-list(v-show='search.showModes')
@@ -57,10 +57,11 @@
 								v-list-item-title Discover Series
 				v-window-item(value='search')
 					v-expand-transition
-						p.overline.text-center.pa-2(v-show='(search.results.length > 0 && search.loading == false) && (search.query != searched.query || search.mode.value != searched.mode.value)')
+						.overline.text-center.pa-2(v-show='(search.results.length > 0 && search.loading == false) && (search.query != searched.query || search.mode.value != searched.mode.value)')
 							span Results for 
 							span.font-italic.font-weight-bold "{{searched.query}}" 
 							span in {{searched.mode.title}}
+							v-icon.d-block(small) mdi-chevron-down
 					v-scroll-y-transition
 						v-list.pt-0(v-show='search.results.length > 0 && search.loading == false')
 							template(v-for='(result, index) in search.results')
@@ -124,8 +125,8 @@
 										v-list-item-title.font-weight-bold {{result.title || result.original_title}}
 										v-list-item-subtitle.overline.font-weight-bold(v-if='result.release_date') {{new Date(result.release_date).toLocaleDateString("en-US", {year: "numeric", month: "short"})}}
 										v-list-item-subtitle {{result.overview}}
-					v-scroll-y-transition
-						p.text-center.overline.pa-3(v-show='search.results.length == 0 && search.query == searched.query && search.mode.value == searched.mode.value && search.loading == false')
+					v-expand-transition
+						.text-center.overline.pa-3(v-show='search.results.length == 0 && search.query == searched.query && search.mode.value == searched.mode.value && search.loading == false')
 							span Found nothing for 
 							span.font-italic.font-weight-bold "{{searched.query}}" 
 							span in {{searched.mode.title}}
