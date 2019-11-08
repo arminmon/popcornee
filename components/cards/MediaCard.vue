@@ -19,6 +19,9 @@
 				template(v-slot:placeholder)
 					v-row.fill-height.ma-0.pa-3(justify='start' align='start')
 						v-progress-circular(indeterminate style='opacity: .25')
+				v-fab-transition
+					v-btn(v-show='hover && $vuetify.breakpoint.smAndDown' icon small top :right='view != "wide"' :left='view == "wide"' absolute)
+						v-icon mdi-dots-horizontal-circle
 				v-container(fluid fill-height)
 					v-row.fill-height
 						v-col(:align-self='$vuetify.breakpoint.xsOnly && view == "wide" ? "center" : "end"' :class='{"py-0": $vuetify.breakpoint.smAndDown}')
