@@ -1,11 +1,11 @@
 <template lang="pug">
 	v-hover(v-slot:default='{ hover }')
 		v-card(
-			:elevation='selected ? 0 : hover ? 15 : 5'
-			:color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"'
+			hover
+			:raised='selected'
 			:disabled='disabled || selected'
-			:flat='selected'
 			:loading='loading'
+			:color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"'
 			nuxt
 			:to='`/${media.first_air_date ? "series" : "movies"}/${media.id}`'
 			)
