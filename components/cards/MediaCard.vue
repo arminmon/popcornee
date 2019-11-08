@@ -32,7 +32,7 @@
 								span.font-weight-regular {{media.release_date || media.first_air_date ? new Date(media.release_date || media.first_air_date).toLocaleDateString("en-US", {year: "numeric", month: "short"}) : "n/a"}}
 								span )
 							v-expand-transition(v-if='media.vote_average > 0')
-								v-rating(v-show='hover || view == "wide"' :value='media.vote_average/2' length='5' half-increments readonly dense small open-delay='300')
+								v-rating(v-show='hover || view == "wide"' :value='media.vote_average/2' length='5' half-increments readonly dense small open-delay='300' color='orange' :background-color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-5"')
 							v-expand-transition(v-if='media.genre_ids.length > 0')
 								.mx-n1(v-show='view == "wide" || hover || ($vuetify.breakpoint.mdAndUp && view != "narrow")')
 									v-chip.ma-1(v-for='(id, index) in media.genre_ids' :key='index' :small='$vuetify.breakpoint.smAndUp' :x-small='$vuetify.breakpoint.xsOnly' outlined) {{$store.getters.genreName(id)}}

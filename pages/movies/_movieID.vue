@@ -26,7 +26,7 @@
 							.mx-n1.py-2
 								v-chip.ma-1(v-for='genre in movie.genres' :key='genre.id' :small='$vuetify.breakpoint.smAndDown' outlined nuxt :to='{ path: "/discover/movies", query: {with_genres: genre.id}}') {{genre.name}}
 							.d-block(v-if='movie.vote_average > 0')
-								v-rating.d-inline(:value='movie.vote_average/2' length='5' half-increments readonly :dense='$vuetify.breakpoint.mdAndDown' open-delay='300')
+								v-rating.d-inline(:value='movie.vote_average/2' length='5' half-increments readonly :dense='$vuetify.breakpoint.mdAndDown' open-delay='300' color='orange' :background-color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-5"')
 								.d-inline.overline.px-2
 									span.font-weight-bold {{movie.vote_average}}
 									span /10
