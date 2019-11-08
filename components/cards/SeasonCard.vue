@@ -2,7 +2,7 @@
 	v-card(hover :color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"' nuxt :to='`/series/${seriesID}/seasons/${season.season_number}`')
 		v-img(:src='$store.getters.imgURL(season.poster_path, "poster", 3)' :lazy-src='$store.getters.imgURL(season.poster_path, "poster", 3)' :aspect-ratio='2/3' :gradient='$utils.gradient("10deg", [{alpha: ".9", pos: "0%"}, {alpha: "0", pos: "55%"}])')
 			template(v-slot:placeholder)
-				v-row.fill-height.ma-0.pa-3(:align='season.poster_path ? "center" : "start"' :justify='season.poster_path ? "center" : "center"')
+				v-row.fill-height.ma-0.pa-3(:align='season.poster_path ? "center" : "start"' justify='center')
 					v-progress-circular(indeterminate style='opacity: .25')
 			v-container.fill-height(fluid)
 				v-row.fill-height(no-gutters)
