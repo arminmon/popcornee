@@ -25,7 +25,7 @@
 					autocomplete='off'
 					solo
 					flat
-					height='63'
+					height='64'
 					clearable
 					hide-details
 					single-line)
