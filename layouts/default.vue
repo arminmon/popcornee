@@ -2,6 +2,7 @@
 	v-app(id='popcornee-app')
 		//- Application Bar
 		v-app-bar(app fixed :right='$vuetify.rtl' :collapse='collapsed' :clipped-left='!drawer && !$vuetify.rtl' :clipped-right='!drawer && $vuetify.rtl')
+			v-progress-linear(absolute bottom height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
 			v-btn(icon @click='drawer = !drawer')
 				v-icon(:class='{"mdi-flip-h": !drawer}') mdi-backburger
 			v-toolbar-title Popcornee
@@ -184,6 +185,7 @@
 					this.$store.commit("SET_DRAWER", val);
 				}
 			},
+			progress: ({ $store }) => $store.state.progress,
 			collapsed: ({ $route }) =>
 				$route.path != "/" && $route.path.split("/")[1] != "discover",
 			window() {

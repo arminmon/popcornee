@@ -1,33 +1,21 @@
-<template lang="pug">
-	v-bottom-sheet(v-model='active' eager attach='#popcornee-app' origin='bottom center' hide-overlay persistent)
-		v-progress-linear(:active='active' :color='color' height='6' :rounded='false' :value='value' :indeterminate='starting')
+<template lang="pug">	
 </template>
 
 <script>
 	export default {
-		data: () => ({
-			active: false,
-			value: 0,
-			color: "primary"
-		}),
-		computed: {
-			starting() {
-				return this.active && this.value == 0 && this.color != "error";
-			}
-		},
 		methods: {
 			start() {
-				this.color = "primary";
-				this.active = true;
+				this.$store.commit("SET_PROGRESS_COLOR", "primary");
+				this.$store.commit("SET_PROGRESS_ACTIVE", true);
 			},
 			finish() {
-				this.active = false;
+				this.$store.commit("SET_PROGRESS_ACTIVE", false);
 			},
 			increase(num) {
-				this.value = num;
+				this.$store.commit("SET_PROGRESS_VALUE", num);
 			},
 			fail() {
-				this.color = "error";
+				this.$store.commit("SET_PROGRESS_COLOR", "error");
 			}
 		}
 	};

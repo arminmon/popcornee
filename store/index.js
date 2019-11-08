@@ -1,6 +1,11 @@
 /* STATE (store stuff) */
 export const state = () => ({
 	drawer: false,
+	progress: {
+		active: false,
+		value: 0,
+		color: 'primary'
+	},
 	configs: null,
 	genres: { all: {}, movies: [], series: [] },
 	certifications: { movies: null, series: null }
@@ -10,6 +15,15 @@ export const state = () => ({
 export const mutations = {
 	SET_DRAWER(state, value) {
 		state.drawer = value
+	},
+	SET_PROGRESS_ACTIVE(state, value) {
+		state.progress.active = value
+	},
+	SET_PROGRESS_VALUE(state, value) {
+		state.progress.value = value
+	},
+	SET_PROGRESS_COLOR(state, value) {
+		state.progress.color = value
 	},
 	SET_CONFIGS(state, configs) {
 		state.configs = configs
