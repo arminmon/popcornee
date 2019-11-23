@@ -5,7 +5,7 @@
 			v-progress-linear(absolute bottom height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
 			v-btn(icon @click='drawer = !drawer')
 				v-icon(:class='{"mdi-flip-h": !drawer}') mdi-backburger
-			v-toolbar-title Popcornee
+			v-toolbar-title.ms-1 Popcornee
 			v-spacer
 			v-btn(icon disabled)
 				v-icon mdi-account-circle
