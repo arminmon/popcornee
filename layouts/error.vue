@@ -2,13 +2,13 @@
 	v-content
 		v-container.fill-height
 			v-row.pb-12(align='center' justify='center')
-				v-card(color='error')
-					v-card-title
+				v-card(color='error' elevation='16')
+					v-card-title.justify-center
 						span.display-4.font-weight-black {{error.statusCode}}
-					v-card-text.title {{error.message}}
+					v-card-text.text-center.title {{error.message}}
 					v-card-actions
 						v-spacer
-						v-btn(text to='/' nuxt)
+						v-btn(text nuxt to='/')
 							v-icon(left) mdi-home-import-outline
 							| Go Home
 </template>
@@ -22,11 +22,7 @@
 			}
 		},
 		head() {
-			const title =
-				this.error.statusCode === 404 ? this.pageNotFound : this.otherError;
-			return {
-				title
-			};
+			return { title: `ERROR ${this.error.statusCode}` };
 		}
 	};
 </script>

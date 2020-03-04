@@ -1,48 +1,50 @@
-require('dotenv').config()
-import colors from 'vuetify/es5/util/colors'
+require("dotenv").config();
+import colors from "vuetify/es5/util/colors";
 
 export default {
+	mode: "universal",
 	head: {
-		titleTemplate: '%s | Popcornee',
-		title: '',
-		meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }],
-		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+		titleTemplate: "%s | POPCORNEE",
+		title: "",
+		meta: [
+			{ charset: "utf-8" },
+			{ name: "viewport", content: "width=device-width, initial-scale=1" },
+			{
+				hid: "description",
+				name: "description",
+				content: process.env.npm_package_description || ""
+			}
+		],
+		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 	},
 
-	loading: '~/components/Progress.vue',
+	loading: "~/components/layout/Progress.vue",
 
 	// css: [],
 
-	plugins: ['~plugins/axios', '~plugins/api', '~plugins/utils'],
+	plugins: ["~plugins/api", "~plugins/utils", "~plugins/vue-masonry-css"],
 
-	buildModules: ['@nuxtjs/dotenv', 'nuxt-webfontloader', '@nuxtjs/vuetify'],
+	buildModules: ["@nuxtjs/dotenv", "nuxt-webfontloader", "@nuxtjs/vuetify"],
 
-	modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
-
-	axios: {
-		progress: true,
-		https: true,
-		proxyHeaders: false,
-		baseURL: 'http://api.themoviedb.org/3/'
-	},
+	modules: [],
 
 	webfontloader: {
 		google: {
-			families: ['Dosis:200,300,400,700,800']
+			families: ["Dosis:200,300,400,700,800"]
 		}
 	},
 
 	vuetify: {
 		treeShake: true,
-		customVariables: ['~/assets/vuetifyVariables.scss'],
+		customVariables: ["~/assets/vuetify/vars.scss"],
 		defaultAssets: {
 			font: {
-				family: 'Dosis'
+				family: "Dosis"
 			},
-			icons: 'mdi'
+			icons: "mdi"
 		},
 		theme: {
-			dark: true,
+			dark: false,
 			themes: {
 				dark: {
 					primary: colors.orange.base,
@@ -70,7 +72,7 @@ export default {
 	},
 
 	build: {
-		transpileDependencies: ['vuetify']
+		transpileDependencies: ["vuetify"]
 		// extend(config, ctx) {}
 	}
-}
+};

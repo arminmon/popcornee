@@ -9,7 +9,7 @@
 </template>
 
 <script>
-	import VideoCard from "~/components/cards/VideoCard";
+	import VideoCard from "~/components/shared/cards/VideoCard";
 	export default {
 		components: {
 			VideoCard

@@ -1,8 +1,15 @@
-import goTo from 'vuetify/es5/services/goto'
+import goTo from "vuetify/es5/services/goto";
 
 export default (to, from, savedPosition) => {
-	if (to.path == from.path) {
-		if (to.hash) return to.hash.startsWith('#tab--') ? null : goTo(to.hash)
-		else return null
-	} else return goTo(0)
-}
+	let target = 0;
+	let offset = 0;
+
+	if (to.hash) {
+		if (to.hash.startsWith("#tab__")) {
+			target = to.path == from.path && from.hash != "" ? "#tabs" : 0;
+			offset = to.path == from.path && from.hash != "" ? 64 : 0;
+		} else target = to.hash;
+	}
+
+	setTimeout(_ => goTo(target, { offset }), 5);
+};

@@ -1,7 +1,7 @@
 <template lang="pug">
 v-content
 	v-container(fluid)
-		media-iterator(:media='all' default-view='narrow' title="Today's Trending Movies & Series" resource='trending/all/day')
+		media-iterator(:media='movies' default-view='narrow' title="Upcoming Movies" resource='movie/upcoming')
 </template>
 
 <script>
@@ -15,12 +15,12 @@ v-content
 			await store.dispatch("FETCH_GENRES");
 		},
 		head: {
-			title: "Today's Trending Movies & Series"
+			title: "Upcoming Movies"
 		},
 		asyncData: ({ app, error }) =>
 			app.$api.tmdb
-				.get("trending/all/day")
-				.then(res => ({ all: res }))
+				.get("movie/upcoming")
+				.then(res => ({ movies: res }))
 				.catch(e => error(e)),
 		mounted() {
 			this.$store.commit("COLLAPSE_APP_BAR", false);

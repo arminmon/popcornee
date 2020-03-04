@@ -25,9 +25,11 @@
 	"dependencies": {
 		"@nuxtjs/axios": "^5.3.6",
 		"@nuxtjs/dotenv": "^1.4.1",
-		"@nuxtjs/pwa": "^3.0.0-0",
+		"@sindresorhus/slugify": "^0.9.1",
 		"nuxt": "^2.10.1",
-		"nuxt-webfontloader": "^1.1.0"
+		"nuxt-logrocket": "^1.2.5",
+		"nuxt-webfontloader": "^1.1.0",
+		"vue-masonry-css": "^1.0.3"
 	},
 	"devDependencies": {
 		"@nuxtjs/vuetify": "^1.9.0",

@@ -1,58 +1,61 @@
 <template lang="pug">
 	v-content.pt-0
-		v-img(
+		v-img.v-img--blurred(
 			:aspect-ratio='10'
-			:min-height='movie.backdrop_path && movie.poster_path ? `calc(100vh + 48px)` : null'
-			:src='$store.getters.imgURL(movie.backdrop_path, "backdrop", 2)'
+			:src='$store.getters.imgURL(movie.backdrop_path, "backdrop", 0)'
 			:lazy-src='$store.getters.imgURL(movie.backdrop_path, "backdrop", 0)'
-			:gradient='$utils.gradient("to top", [{ alpha: "1", pos: "50px" }, { alpha: ".55", pos: "100%" }])'
+			:gradient='$utils.gradient("to top", [{ alpha: "1", pos: "15%" }, { alpha: ".7", pos: "100%" }])'
 			)
 			template(v-slot:placeholder)
-				v-row.fill-height.ma-0.pa-3(justify='end' align='start')
+				.d-flex.pa-3.fill-height.justify-end.align-start
 					v-progress-circular(indeterminate style='opacity: .25')
-			.d-flex.flex-column.fill-height
-				v-container.fill-height.pt-12.pb-0
-					v-row.fill-height.pt-12.pb-6(align='center' justify='center')
-						v-col.px-6(cols='12' :sm='movie.poster_path ? 8 : 12')
-							h1.display-1 {{movie.title || movie.original_title}}
-							h3.subtitle-1.font-weight-light.font-italic(v-if='movie.tagline') – {{movie.tagline}}
-							p(v-if='movie.overview') {{movie.overview}}
-							.d-block
-								h2.subtitle-1.d-inline(v-if='movie.release_date')
-									span.font-weight-bold {{new Date(movie.release_date).toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"})}}
-									span.font-weight-light(v-if='movie.status')  ({{movie.status}})
-								h2.subtitle-1.font-weight-light(v-else) (N/A)
-								releases-dialog(:releases='movie.release_dates.results' v-if='movie.release_date && movie.release_dates.results.length>0')
-							.mx-n1.py-2
-								v-chip.ma-1(v-for='genre in movie.genres' :key='genre.id' :small='$vuetify.breakpoint.smAndDown' outlined nuxt :to='{ path: "/discover/movies", query: {with_genres: genre.id}}') {{genre.name}}
-							.d-block(v-if='movie.vote_average > 0')
-								v-rating.d-inline(:value='movie.vote_average/2' length='5' half-increments readonly :dense='$vuetify.breakpoint.mdAndDown' open-delay='300' color='orange' :background-color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-5"')
-								.d-inline.overline.px-2
-									span.font-weight-bold {{movie.vote_average}}
-									span /10
-						v-col(cols='12' sm='4' v-if='movie.poster_path' :class='{"px-8": $vuetify.breakpoint.xsOnly}')
-							v-hover(v-slot:default='{ hover }')
-								v-card(elevation='15')
-									v-img(:src='$store.getters.imgURL(movie.poster_path, "poster", 4)' :lazy-src='$store.getters.imgURL(movie.poster_path, "poster", 0)' :aspect-ratio='2/3')
-										template(v-slot:placeholder)
-											v-row.fill-height.ma-0.pa-3(justify='center' align='center')
-												v-progress-circular(indeterminate)
-										v-container.fill-height.align-end.justify-center(fluid)
-											v-fab-transition
-												v-btn(v-show='hover' fab small :href='`${$store.getters.imgURL(movie.poster_path,"poster",6)}`' target='_blank')
-													v-icon mdi-download
-				v-container.py-0(:class='{ "px-0": $vuetify.breakpoint.xsOnly }')
-					.text-center
-						v-expand-transition
-							v-btn.my-3(@click='$vuetify.goTo("#tabs")' icon x-large v-show='$vuetify.breakpoint.smAndUp && movie.backdrop_path && movie.poster_path && downButton' v-scroll='(e) => {downButton = e.target.scrollingElement.scrollTop < 50 }')
-								v-icon(large style='opacity: .5') mdi-chevron-down
-					v-tabs#tabs(v-model='tab' show-arrows grow center-active background-color="transparent")
-						v-tab(v-for='tab in tabs' :key='tab.title' v-if='!tab.disabled' :to='tab.to' nuxt replace)
-							v-icon(:left='$vuetify.breakpoint.smAndUp') {{tab.icon}}
-							span(v-if='$vuetify.breakpoint.smAndUp') {{tab.title}}
+			v-container.fill-height.py-12(:class='{ "pb-0": $vuetify.breakpoint.xsOnly }')
+				v-row.py-6(align='center' justify='center')
+					v-col(align-self='center')
+						h1.display-1.font-weight-bold {{movie.title || movie.original_title}}
+						h3.subtitle-1.font-weight-light.font-italic(v-if='movie.tagline') – {{movie.tagline}}
+						p(v-if='movie.overview') {{movie.overview}}
+						.d-block
+							h2.subtitle-1.d-inline(v-if='movie.release_date')
+								span.font-weight-bold {{new Date(movie.release_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}}
+								span.font-weight-light(v-if='movie.status')  ({{movie.status}})
+							h2.subtitle-1.font-weight-light(v-else) (N/A)
+							releases-dialog(:releases='movie.release_dates.results' v-if='movie.release_date && movie.release_dates.results.length > 0')
+						.mx-n1.py-2
+							v-chip.ma-1(v-for='genre in movie.genres' :key='genre.id' :small='$vuetify.breakpoint.smAndDown' outlined nuxt :to='{ path: "/discover/movies", query: { with_genres: genre.id } }') {{genre.name}}
+						.d-block(v-if='movie.vote_average > 0')
+							v-rating.d-inline(:value='movie.vote_average/2' length='5' half-increments readonly :dense='$vuetify.breakpoint.mdAndDown' open-delay='300' color='orange' :background-color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-5"')
+							.d-inline.overline.px-2
+								span.font-weight-bold {{movie.vote_average}}
+								span /10
+						v-btn.mt-6(v-if='!tabs.cast.disabled' height='100' text nuxt replace to='#tab__cast' :block='$vuetify.breakpoint.smAndDown')
+							.mx-n2
+								v-avatar.elevation-3.mx-2(v-for='person in movie.credits.cast.slice(0, $vuetify.breakpoint.smAndDown ? 3 : 4)' :key='person.credit_id' :size='$vuetify.breakpoint.smAndDown ? 65 : 78')
+									v-img(v-if='person.profile_path' :src='$store.getters.imgURL(person.profile_path, "profile", 1)' aspect-ratio='1' :lazy-src='$store.getters.imgURL(person.profile_path, "profile", 0)')
+									span.headline(v-else) {{person.name.split(" ")[0][0]}}{{person.name.split(" ")[1][0]}}
+								v-avatar.mx-2(v-if='movie.credits.cast.length - ($vuetify.breakpoint.smAndDown ? 3 : 4) > 0' :size='$vuetify.breakpoint.smAndDown ? 65 : 78')
+									span.title +{{movie.credits.cast.length - ($vuetify.breakpoint.smAndDown ? 3 : 4)}}
+					v-col(cols='12' sm='4' v-if='movie.poster_path')
+						v-hover(v-slot:default='{ hover }')
+							v-card(elevation='15')
+								v-img(:src='$store.getters.imgURL(movie.poster_path, "poster", 4)' :lazy-src='$store.getters.imgURL(movie.poster_path, "poster", 0)' :aspect-ratio='2/3')
+									template(v-slot:placeholder)
+										.d-flex.pa-3.fill-height.justify-center.align-center
+											v-progress-circular(indeterminate)
+									v-container.fill-height.align-end.justify-center(fluid)
+										v-fab-transition
+											v-btn(v-show='hover' fab small :href='`${$store.getters.imgURL(movie.poster_path,"poster",6)}`' target='_blank')
+												v-icon mdi-download
+		v-sheet(tile elevation='0')
+			v-container.py-0(:class='{ "px-0": $vuetify.breakpoint.xsOnly }')
+				v-tabs#tabs(v-model='tab' show-arrows grow center-active icons-and-text background-color="transparent")
+					v-tabs-slider
+					v-tab(v-for='tab in tabs' :key='tab.to' nuxt replace :to='tab.to' v-if='!tab.disabled')
+						span {{tab.title}}
+						v-icon {{tab.icon}}
 		v-tabs-items(v-model='tab')
 			//- Info Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab--info')
+			v-tab-item(value='tab__info')
 				//- Info Table
 				v-container
 					v-simple-table.py-6.info-table
@@ -86,7 +89,7 @@
 								td.text-right.caption.font-weight-light Production {{movie.production_companies.length > 1 ? "Companies" : "Company"}}
 								td
 									.mx-n1
-										v-chip.ma-1(pill v-for='company in movie.production_companies' :key='company.id' :to='`/companies/${company.id}`' nuxt)
+										v-chip.ma-1(pill v-for='company in movie.production_companies' :key='company.id' :to='`/companies/${company.id}-${$utils.slugify(String(company.name))}#tab__info`' nuxt)
 											v-avatar(v-if='$vuetify.breakpoint.mdAndUp && company.logo_path' left :color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-3"')
 												v-img(:src='$store.getters.imgURL(company.logo_path, "logo", 0)' contain)
 											| {{company.name}}
@@ -121,106 +124,89 @@
 									v-btn(text :icon='$vuetify.breakpoint.smAndDown' :href='`https://www.instagram.com/${movie.external_ids.instagram_id}`' target='_blank' v-if='movie.external_ids.instagram_id')
 										v-icon(:left='$vuetify.breakpoint.mdAndUp') mdi-instagram
 										span(v-show='$vuetify.breakpoint.mdAndUp') Instagram
-									yts-dialog(:torrents='movie.yts' v-if='movie.yts')
-				//- Cast
-				v-container(v-show='$vuetify.breakpoint.smAndUp')
-					v-toolbar(flat color='transparent')
-						v-toolbar-title.text-capitalize Cast
-						v-spacer
-						v-btn(text nuxt to='#tab--cast' v-if='movie.credits.cast.length > visibleCast') View All ({{movie.credits.cast.length}})
-					v-row(:dense='$store.state.drawer || $vuetify.breakpoint.smAndDown')
-						v-col(v-for='person in movie.credits.cast.slice(0, visibleCast)' :key='person.credit_id' cols='6' sm='4' md='3' lg='2' xl='1')
-							person-card(:person='person')
 				//- Collection
-				v-container(v-if='movie.collection')
-					media-iterator(:media='movie.collection.parts' :title='movie.collection.name' default-view='narrow' flat-header hide-views)
+				v-container(fluid v-if='movie.collection')
+					media-iterator(:media='movie.collection.parts' :title='movie.collection.name' justify='center' default-view='narrow' hide-views)
 						template(v-slot:header-append)
-							v-btn(text nuxt :to='`/movies/collections/${movie.collection.id}`') {{$vuetify.breakpoint.mdAndUp ? "View Collection" : "View"}}
+							v-btn(text nuxt :to='`/movies/collections/${movie.collection.id}-${$utils.slugify(String(movie.collection.name))}`') {{$vuetify.breakpoint.mdAndUp ? "View Collection" : "View"}}
 				//- Recommendations
 				v-container(fluid v-if='movie.recommendations.total_results > 0')
-					media-iterator(:media='movie.recommendations' title='You may also like' default-view='square' flat-header :resource='["movie", movie.id, "recommendations"]')
+					media-iterator(:media='movie.recommendations' title='You may also like' :resource='`movie/${movie.id}/recommendations`')
 				//- Keywords
 				v-container(v-if='movie.keywords.keywords')
 					.px-2
 						.text-center.pb-6.mx-n2
 							v-chip.text-uppercase.ma-2(v-for='keyword in movie.keywords.keywords' :key='keyword.id' label outlined small nuxt :to='{ path: "/discover/movies", query: {with_keywords: keyword.id}}') {{keyword.name}}
 			//- Cast Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab--cast' v-if='!tabs.cast.disabled')
+			v-tab-item(value='tab__cast' v-if='!tabs.cast.disabled')
 				cast-iterator(:cast='movie.credits.cast')
 			//- Crew Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab--crew' v-if='!tabs.crew.disabled')
+			v-tab-item(value='tab__crew' v-if='!tabs.crew.disabled')
 				crew-table(:crew='movie.credits.crew')
 			//- Videos Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab--videos' v-if='!tabs.videos.disabled')
+			v-tab-item(value='tab__videos' v-if='!tabs.videos.disabled')
 				videos-grid(:videos='movie.videos')
 			//- Reviews Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab--reviews' v-if='!tabs.reviews.disabled')
+			v-tab-item(value='tab__reviews' v-if='!tabs.reviews.disabled')
 				reviews-timeline(:reviews='movie.reviews')
 			//- Similar Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab--similar' v-if='!tabs.similar.disabled')
+			v-tab-item(value='tab__similar' v-if='!tabs.similar.disabled')
 				v-container(fluid)
-					media-iterator(:media='movie.similar' title='Similar Movies' default-view='square' flat-header :resource='["movie", movie.id, "similar"]')
+					media-iterator(:media='movie.similar' title='Similar Movies' :resource='`movie/${movie.id}/similar`')
 </template>
 
 <script>
-	import ReleasesDialog from "~/components/dialogs/ReleasesDialog";
-	import YtsDialog from "~/components/dialogs/YtsDialog";
-	import PersonCard from "~/components/cards/PersonCard";
-	import MediaIterator from "~/components/iterators/MediaIterator";
-	import CastIterator from "~/components/iterators/CastIterator";
-	import CrewTable from "~/components/iterators/CrewTable";
-	import VideosGrid from "~/components/iterators/VideosGrid";
-	import ReviewsTimeline from "~/components/iterators/ReviewsTimeline";
+	import ReleasesDialog from "~/components/movies/dialogs/ReleasesDialog";
+	import MediaIterator from "~/components/shared/iterators/MediaIterator";
+	import CastIterator from "~/components/shared/iterators/CastIterator";
+	import CrewTable from "~/components/shared/iterators/CrewTable";
+	import VideosGrid from "~/components/shared/iterators/VideosGrid";
+	import ReviewsTimeline from "~/components/shared/iterators/ReviewsTimeline";
 	export default {
 		components: {
 			ReleasesDialog,
-			YtsDialog,
-			PersonCard,
 			MediaIterator,
 			CastIterator,
 			CrewTable,
 			VideosGrid,
 			ReviewsTimeline
 		},
-		validate: ({ params }) => /^\d+$/.test(params.movieID),
+		validate: ({ params }) => /^\d+$/.test(String(params.movieID).split("-")[0]),
 		fetch: async ({ store }) => {
 			await store.dispatch("FETCH_CONFIGS");
 			await store.dispatch("FETCH_GENRES");
 		},
-		asyncData: ({ app, params }) =>
-			app.$api
-				.tmdb(["movie", params.movieID], {
-					append_to_response: [
-						"credits",
-						"keywords",
-						"external_ids",
-						"videos",
-						"recommendations",
-						"similar",
-						"release_dates",
-						"reviews"
-					].join()
-				})
-				.then(async response => {
-					response.release_dates.results.sort((a, b) =>
-						a.iso_3166_1 > b.iso_3166_1 ? 1 : -1
-					);
-					response.collection = null;
-					if (response.belongs_to_collection) {
-						response.collection = await app.$api.tmdb([
-							"collection",
-							response.belongs_to_collection.id
-						]);
-						delete response.belongs_to_collection;
+		asyncData: ({ app, params, error }) =>
+			app.$api.tmdb
+				.get(`movie/${String(params.movieID).split("-")[0]}`, {
+					params: {
+						append_to_response: [
+							"credits",
+							"keywords",
+							"external_ids",
+							"videos",
+							"recommendations",
+							"similar",
+							"release_dates",
+							"reviews"
+						].join()
 					}
-					response.yts = null;
-					if (response.external_ids.imdb_id) {
-						let yts = await app.$api.yts(response.external_ids.imdb_id);
-						if (yts.movie_count > 0) response.yts = yts.movies[0].torrents;
-					}
-					return { movie: response };
 				})
-				.catch(error => console.error(error)),
+				.then(async res => {
+					if (res.release_dates && res.release_dates.results.length > 0)
+						res.release_dates.results.sort((a, b) =>
+							a.iso_3166_1 > b.iso_3166_1 ? 1 : -1
+						);
+					res.collection = null;
+					if (res.belongs_to_collection) {
+						res.collection = await app.$api.tmdb.get(
+							`collection/${res.belongs_to_collection.id}`
+						);
+						delete res.belongs_to_collection;
+					}
+					return { movie: res };
+				})
+				.catch(e => error(e)),
 		head() {
 			return {
 				title: `${this.movie.title || this.movie.original_title} (${
@@ -233,7 +219,6 @@
 			};
 		},
 		data: _ => ({
-			downButton: true,
 			tab: null
 		}),
 		computed: {
@@ -241,54 +226,51 @@
 				return {
 					info: {
 						title: "Info",
-						to: "#tab--info",
+						to: "#tab__info",
 						icon: "mdi-information-variant"
 					},
 					cast: {
 						title: "Cast",
-						to: "#tab--cast",
+						to: "#tab__cast",
 						icon: "mdi-account-box-multiple",
 						disabled: this.movie.credits.cast.length < 1
 					},
 					crew: {
 						title: "Crew",
-						to: "#tab--crew",
+						to: "#tab__crew",
 						icon: "mdi-account-group",
 						disabled: this.movie.credits.crew.length < 1
 					},
 					videos: {
 						title: "Videos",
-						to: "#tab--videos",
+						to: "#tab__videos",
 						icon: "mdi-library-video",
 						disabled: this.movie.videos.total_results < 1
 					},
 					reviews: {
 						title: "Reviews",
-						to: "#tab--reviews",
+						to: "#tab__reviews",
 						icon: "mdi-android-messages",
 						disabled: this.movie.reviews.total_results < 1
 					},
 					similar: {
 						title: "Similar",
-						to: "#tab--similar",
+						to: "#tab__similar",
 						icon: "mdi-approximately-equal-box",
 						disabled: this.movie.similar.total_results < 1
 					}
 				};
 			},
 			visibleCast: ({ $vuetify }) =>
-				$vuetify.breakpoint.xsOnly
-					? 4
-					: $vuetify.breakpoint.smOnly
-					? 3
-					: $vuetify.breakpoint.mdOnly
-					? 4
+				$vuetify.breakpoint.mdAndDown
+					? 4 - 1
 					: $vuetify.breakpoint.lgOnly
-					? 6
-					: 12
+					? 6 - 1
+					: 12 - 1
 		},
 		mounted() {
-			if (this.$route.hash == "") this.$router.replace({ hash: "#tab--info" });
+			this.$store.commit("COLLAPSE_APP_BAR", true);
+			if (this.$route.hash == "") this.$router.replace({ hash: "#tab__info" });
 		}
 	};
 </script>

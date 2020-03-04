@@ -1,18 +1,29 @@
 <template lang="pug">
 	v-app(id='popcornee-app')
 		//- Application Bar
-		v-app-bar(app fixed :right='$vuetify.rtl' :collapse='collapsed' :clipped-left='!drawer && !$vuetify.rtl' :clipped-right='!drawer && $vuetify.rtl')
+		v-app-bar(app fixed :elevate-on-scroll='!$store.state.appBarCollapsed' :collapse='$store.state.appBarCollapsed' :clipped-left='!$vuetify.rtl' :clipped-right='$vuetify.rtl' :right='$vuetify.rtl' :left='!$vuetify.rtl')
+			v-app-bar-nav-icon(@click='drawer = !drawer')
+			v-toolbar-title.font-weight-bold POPCORNEE
 			v-progress-linear(absolute bottom height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
-			v-btn(icon @click='drawer = !drawer')
-				v-icon(:class='{"mdi-flip-h": !drawer}') mdi-backburger
-			v-toolbar-title.ms-1 Popcornee
 			v-spacer
-			v-btn(icon disabled)
-				v-icon mdi-account-circle
+			v-btn(icon @click='$vuetify.theme.dark = !$vuetify.theme.dark')
+				v-icon {{$vuetify.theme.dark ? "mdi-lightbulb-on" : "mdi-lightbulb"}}
 		//- Navigation Drawer
-		v-navigation-drawer(v-model='drawer' app width='310' disable-resize-watcher)
+		v-navigation-drawer.v-card.elevation-12(
+			v-model='drawer'
+			app
+			temporary
+			floating
+			:class='{ "my-4": $vuetify.breakpoint.mdAndUp, "my-2": $vuetify.breakpoint.smAndDown, "mx-4": $vuetify.breakpoint.mdAndUp && drawer, "mx-2": $vuetify.breakpoint.smAndDown && drawer }'
+			:overlay-color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-4"'
+			overlay-opacity='.75'
+			:width='$vuetify.breakpoint.smAndDown ? 310 : 360'
+			:height='`calc(100vh - ${$vuetify.breakpoint.smAndDown ? "16" : "32"}px)`'
+			:right='$vuetify.rtl'
+			disable-resize-watcher)
+			v-progress-linear(absolute top height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
 			template(v-slot:prepend)
-				v-text-field(
+				v-text-field.pt-0.mt-0(
 					v-model='search.query'
 					type='search'
 					role='search'
@@ -23,18 +34,21 @@
 					:placeholder='search.showModes ? "Search?" : `Search ${search.mode.title}`'
 					:readonly='search.showModes'
 					autocomplete='off'
-					solo
+					full-width
 					flat
-					height='64'
-					clearable
+					height='67'
 					hide-details
 					single-line)
 					template(v-slot:prepend-inner)
-						v-btn(icon @click='search.showModes = !search.showModes')
+						v-btn.mx-1(icon @click='search.showModes = !search.showModes')
 							v-scale-transition(leave-absolute)
 								v-icon(v-show='!search.showModes') {{search.mode.icon}}
 							v-scroll-y-reverse-transition(leave-absolute)
 								v-icon(v-show='search.showModes') mdi-chevron-up
+					template(v-slot:append)
+						v-fade-transition
+							v-btn.mx-1(v-show='search.query != null && search.query != ""' icon @click='search.query = null')
+								v-icon mdi-close
 				v-expand-transition
 					v-list(v-show='search.showModes')
 						v-list-item-group(v-model='search.mode.value' mandatory)
@@ -43,20 +57,64 @@
 									v-icon {{mode.icon}}
 								v-list-item-content
 									v-list-item-title {{mode.title}}
-				v-divider
-			v-window(v-model='window')
+						v-divider
+			v-window(v-model='window' vertical)
 				v-window-item(value='nav')
+					//- Navigation List
 					v-list(nav)
 						v-list-item(nuxt to='/')
+							v-list-item-icon
+								v-icon mdi-home-variant
 							v-list-item-content
 								v-list-item-title Root
-						v-list-item(nuxt to='/discover/movies')
-							v-list-item-content
-								v-list-item-title Discover Movies
-						v-list-item(nuxt to='/discover/series')
-							v-list-item-content
-								v-list-item-title Discover Series
+						v-list-group(group='movies' prepend-icon='mdi-movie-open' :color='undefined' no-action :value='true')
+							template(v-slot:activator)
+								v-list-item-title Movies
+							v-list-item(nuxt to='/discover/movies')
+								v-list-item-icon
+									v-icon mdi-filter-variant
+								v-list-item-content
+									v-list-item-title Discover
+							v-list-item(nuxt to='/movies/upcoming')
+								v-list-item-icon
+									v-icon mdi-chart-line-variant
+								v-list-item-content
+									v-list-item-title Upcoming
+							v-list-item(nuxt to='/movies/popular')
+								v-list-item-icon
+									v-icon mdi-star-circle
+								v-list-item-content
+									v-list-item-title Popular
+							v-list-item(nuxt to='/movies/top-rated')
+								v-list-item-icon
+									v-icon mdi-star
+								v-list-item-content
+									v-list-item-title Top Rated
+						v-list-group(group='series' prepend-icon='mdi-television-classic' no-action :value='true')
+							template(v-slot:activator)
+								v-list-item-title Series
+							v-list-item(nuxt to='/discover/series')
+								v-list-item-icon
+									v-icon mdi-filter-variant
+								v-list-item-content
+									v-list-item-title Discover
+							v-list-item(nuxt to='/series/airing-today')
+								v-list-item-icon
+									v-icon mdi-calendar-today
+								v-list-item-content
+									v-list-item-title Airing Today
+							v-list-item(nuxt to='/series/popular')
+								v-list-item-icon
+									v-icon mdi-star-circle
+								v-list-item-content
+									v-list-item-title Popular
+							v-list-item(nuxt to='/series/top-rated')
+								v-list-item-icon
+									v-icon mdi-star
+								v-list-item-content
+									v-list-item-title Top Rated
 				v-window-item(value='search')
+					//- Search Tools
 					v-expand-transition
 						.overline.text-center.pa-2(v-show='(search.results.length > 0 && search.loading == false) && (search.query != searched.query || search.mode.value != searched.mode.value)')
 							span Results for 
@@ -66,7 +124,7 @@
 					v-scroll-y-transition
 						v-list.pt-0(v-show='search.results.length > 0 && search.loading == false')
 							template(v-for='(result, index) in search.results')
-								v-divider(v-if='index != 0' :key='index')
+								v-divider(v-if='index != 0' :key='index' inset)
 								//- Person
 								v-list-group(v-if='result.media_type == "person" || searched.mode.value == "person"' :key='result.id')
 									template(v-slot:activator)
@@ -98,9 +156,6 @@
 												v-list-item-title.font-weight-bold {{rMedia.title || rMedia.original_title}}
 												v-list-item-subtitle.overline.font-weight-bold(v-if='rMedia.release_date') {{new Date(rMedia.release_date).toLocaleDateString("en-US", {year: "numeric", month: "short"})}}
 												v-list-item-subtitle {{rMedia.overview}}
-								//- Keyword
-								//- v-list-item(v-else-if='searched.mode.value == "keyword"' :key='result.id' @click='dialog = false' nuxt :to='{ path: "/discover/movies", query: {with_keywords: result.id}}' exact)
-									v-list-title.text-uppercase {{result.name}}
 								//- Collection
 								v-list-item(v-else-if='searched.mode.value == "collection"' :key='result.id' @click='dialog = false' nuxt :to='`/movies/collections/${result.id}`')
 									v-list-item-avatar(tile width='41' height='63')
@@ -131,12 +186,6 @@
 							span Found nothing for 
 							span.font-italic.font-weight-bold "{{searched.query}}" 
 							span in {{searched.mode.title}}
-			template(v-slot:append)
-				v-fade-transition
-					.pa-6(v-show='window == "nav"')
-						v-btn(block @click='$vuetify.theme.dark = !$vuetify.theme.dark')
-							v-icon(left) {{$vuetify.theme.dark ? "mdi-lightbulb-on" : "mdi-lightbulb"}}
-							| {{$vuetify.theme.dark ? "Lights On" : "Lights Off"}}
 		//- Content
 		nuxt
 		//- Footer
@@ -144,6 +193,7 @@
 </template>
 
 <script>
+	import { mapGetters } from "vuex";
 	export default {
 		data: _ => ({
 			search: {
@@ -170,7 +220,6 @@
 						icon: "mdi-checkbox-multiple-blank"
 					},
 					{ value: "person", title: "People", icon: "mdi-account-box" }
-					// { value: "keyword", title: "Keywords", icon: "mdi-file-word-box" }
 				]
 			},
 			searched: {
@@ -179,15 +228,13 @@
 			}
 		}),
 		computed: {
+			...mapGetters(["progress"]),
 			drawer: {
 				get: ({ $store }) => $store.state.drawer,
 				set(val) {
 					this.$store.commit("SET_DRAWER", val);
 				}
 			},
-			progress: ({ $store }) => $store.state.progress,
-			collapsed: ({ $route }) =>
-				$route.path != "/" && $route.path.split("/")[1] != "discover",
 			window() {
 				return this.search.query != "" &&
 					this.search.query != null &&
@@ -201,10 +248,12 @@
 				if (this.search.query != "" && this.search.query != null)
 					try {
 						this.search.loading = true;
-						let response = await this.$api.tmdb(
-							["search", this.search.mode.value],
+						let response = await this.$api.tmdb.get(
+							`search/${this.search.mode.value}`,
 							{
-								query: this.search.query
+								params: {
+									query: this.search.query
+								}
 							}
 						);
 						this.searched.query = this.search.query;
@@ -212,7 +261,7 @@
 						this.search.loading = "success";
 						this.search.results = response.results;
 						if (response.results.length == 0) throw new Error();
-					} catch (error) {
+					} catch (e) {
 						this.search.fetching = "error";
 					} finally {
 						this.search.loading = false;
@@ -222,12 +271,17 @@
 	};
 </script>
 
-<style lang='scss'>
+<style lang="scss">
+	.v-navigation-drawer,
+	.v-bottom-navigation,
+	.v-app-bar {
+		backdrop-filter: blur(7px);
+	}
+
 	.v-img--blurred {
 		> .v-image__image {
 			filter: blur(15px);
 			transform: scale(1.2);
-			// clip-path: content-box;
 		}
 	}
 	.info-table {
@@ -237,12 +291,16 @@
 					&:first-child {
 						min-width: 100px;
 						max-width: 25%;
+						width: 25%;
 					}
 				}
 			}
 		}
 	}
-	.v-badge__badge {
-		line-height: 1 !important;
+	// Fix grid bug
+	.container.fill-height {
+		> .row {
+			max-width: initial;
+		}
 	}
 </style>
