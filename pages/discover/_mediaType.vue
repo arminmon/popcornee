@@ -12,7 +12,7 @@
 			:overlay-color='$vuetify.theme.dark ? "grey darken-4" : "white"'
 			overlay-opacity='.75'
 			:width='$vuetify.breakpoint.smAndDown ? "calc(100vw - 16px)" : "310"'
-			:class='{ "v-card": $vuetify.breakpoint.smAndDown, "elevation-12": $vuetify.breakpoint.smAndDown }')
+			:class='{ "elevation-12": $vuetify.breakpoint.smAndDown }')
 			template(v-slot:prepend)
 				v-tabs(v-model='mediaType' grow)
 					v-tab
