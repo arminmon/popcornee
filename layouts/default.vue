@@ -7,7 +7,7 @@
 			v-progress-linear(absolute bottom height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
 			v-spacer
 			v-btn(icon @click='$vuetify.theme.dark = !$vuetify.theme.dark')
-				v-icon {{$vuetify.theme.dark ? "mdi-lightbulb-on" : "mdi-lightbulb"}}
+				v-icon {{$vuetify.theme.dark ? "mdi-brightness-5" : "mdi-brightness-3"}}
 		//- Navigation Drawer
 		v-navigation-drawer.v-card.elevation-12(
 			v-model='drawer'
