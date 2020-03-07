@@ -50,10 +50,10 @@
 															v-card(elevation='12')
 																v-img(v-if='season.poster_path' :aspect-ratio='2/3' width='100%' :src='$store.getters.imgURL(season.poster_path, "poster", 3)' :lazy-src='$store.getters.imgURL(season.poster_path, "poster", 0)')
 																	template(v-slot:placeholder)
-																		.d-flex.pa-3.fill-height.justify-start.align-start
+																		v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 																			v-progress-circular(indeterminate)
 																v-responsive(v-else :aspect-ratio='2/3')
-																	.d-flex.pa-3.fill-height.justify-start.align-start
+																	v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 																		v-icon(disabled large) mdi-image-off
 					v-window-item#season-page(value='season' eager)
 						season-page(:seasonNum='selected' v-on:changeLoadingState='loading = $event' v-on:changeWindow='window = $event')

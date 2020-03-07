@@ -10,7 +10,7 @@
 					v-avatar.elevation-2.my-4(:size='$vuetify.breakpoint.xsOnly ? 48 : 64' :tile='$vuetify.breakpoint.xsOnly')
 						v-img(v-if='item.profile_path' :src='$store.getters.imgURL(item.profile_path, "profile", 1)' :lazy-src='$store.getters.imgURL(item.profile_path, "profile", 0)')
 							template(v-slot:placeholder)
-								.d-flex.pa-3.fill-height.justify-center.align-center
+								v-row.pa-3.ma-0.fill-height(justify='center' align='center')
 									v-progress-circular(indeterminate)
 						v-icon(v-else large) mdi-account-circle
 			template(v-slot:no-results)

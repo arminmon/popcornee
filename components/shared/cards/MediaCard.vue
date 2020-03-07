@@ -13,7 +13,7 @@
 						v-card(elevation='12')
 							v-img(v-if='media.poster_path' :aspect-ratio='2/3' width='100%' :src='$store.getters.imgURL(media.poster_path, "poster", 3)' :lazy-src='$store.getters.imgURL(media.poster_path, "poster", 0)')
 								template(v-slot:placeholder)
-									.d-flex.pa-3.fill-height.justify-start.align-start
+									v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 										v-progress-circular(indeterminate)
 								v-overlay(:value='hover && view == "narrow"' absolute opacity='0.92' :color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"' :light='$vuetify.theme.light' :dark='$vuetify.theme.dark')
 									v-container(fluid)
@@ -24,7 +24,7 @@
 											v-col.flex-grow-0.flex-shrink-0(justify-self='center')
 												v-rating(:value='media.vote_average/2' length='5' half-increments readonly dense small color='orange' :background-color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-5"')
 							v-responsive(v-else :aspect-ratio='2/3')
-								.d-flex.pa-3.fill-height.justify-start.align-start
+								v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 									v-icon(disabled large) mdi-image-off
 					v-col.px-1(:cols='view == "narrow" ? 12 : 6' :class='{ "pt-3": view == "narrow", "ps-3": view == "wide", "py-5": view == "wide" }')
 						v-list-item.pa-0

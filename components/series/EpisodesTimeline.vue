@@ -45,32 +45,32 @@
 						v-card(v-show='toggles.includes("stillImage")')
 							v-img(:src='$store.getters.imgURL(episode.still_path, "still", 3)' :lazy-src='$store.getters.imgURL(episode.still_path, "still", 0)' :aspect-ratio='episode.still_path ? 300/169 : 10')
 								template(v-slot:placeholder)
-									.d-flex.pa-3.fill-height.justify-start.align-start
+									v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 										v-progress-circular(indeterminate)
-								.d-flex.fill-height.align-center.justify-center.pa-3(v-if='episode.still_path == null')
-									v-icon.d-flex(style='opacity: .25') mdi-image-off
+								v-row.pa-3.ma-0.fill-height(justify='center' align='center' v-if='episode.still_path == null')
+									v-icon(style='opacity: .25') mdi-image-off
 </template>
 
 <script>
-export default {
-	props: {
-		episodes: {
-			type: Array,
-			default: []
+	export default {
+		props: {
+			episodes: {
+				type: Array,
+				default: []
+			},
+			seasonNum: null
 		},
-		seasonNum: null
-	},
-	data: _ => ({
-		toggles: [],
-		dialog: false
-	}),
-	computed: {
-		guestStarsAvailable() {
-			return this.episodes.some(episode => episode.guest_stars.length > 0);
-		},
-		stillImageAvailable() {
-			return this.episodes.some(episode => episode.still_path != null);
+		data: _ => ({
+			toggles: [],
+			dialog: false
+		}),
+		computed: {
+			guestStarsAvailable() {
+				return this.episodes.some(episode => episode.guest_stars.length > 0);
+			},
+			stillImageAvailable() {
+				return this.episodes.some(episode => episode.still_path != null);
+			}
 		}
-	}
-};
+	};
 </script>

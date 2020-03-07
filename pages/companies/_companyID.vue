@@ -6,9 +6,9 @@
 			:gradient='$utils.gradient("to top", [{ alpha: "1", pos: "0%" }, { alpha: "0", pos: "100%" }])'
 			)
 			template(v-slot:placeholder)
-				.d-flex.pa-3.fill-height.justify-start.align-start
+				v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 					v-progress-circular(indeterminate style='opacity: .25')
-			v-container.fill-height.py-12(:class='{ "pb-0": $vuetify.breakpoint.xsOnly }')
+			v-container.py-12(:class='{ "pb-0": $vuetify.breakpoint.xsOnly }')
 				v-row.py-4(align='center' justify='center')
 					v-col(cols='12' sm='3' :order='$vuetify.breakpoint.xsOnly ? "last" : "first"' v-if='company.logo_path')
 						v-img(:src='$store.getters.imgURL(company.logo_path, "logo", 4)')
@@ -45,9 +45,9 @@
 								v-card.pa-3(hover :href='`${$store.getters.imgURL(image.file_path,"logo",6)}`' target='_blank')
 									v-img(:src='$store.getters.imgURL(company.logo_path, "logo", 3)' :lazy-src='$store.getters.imgURL(company.logo_path, "logo", 0)' contain aspect-ratio='1')
 										template(v-slot:placeholder)
-											.d-flex.pa-3.fill-height.justify-center.align-center
+											v-row.pa-3.ma-0.fill-height(justify='center' align='center')
 												v-progress-circular(indeterminate)
-										v-container.fill-height.align-end.justify-center(fluid)
+										v-row.pa-3.ma-0.fill-height(justify='center' align='center')
 											v-fab-transition
 												v-btn(v-show='hover' fab small)
 													v-icon mdi-download

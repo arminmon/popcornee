@@ -298,9 +298,9 @@
 		}
 	}
 	// Fix grid bug
-	.container.fill-height {
-		> .row {
-			max-width: initial;
-		}
-	}
+	// .container.fill-height {
+	// 	> .row {
+	// 		max-width: initial;
+	// 	}
+	// }
 </style>

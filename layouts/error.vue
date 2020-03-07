@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-content
-		v-container.fill-height
+		v-container
 			v-row.pb-12(align='center' justify='center')
 				v-card(color='error' elevation='16')
 					v-card-title.justify-center

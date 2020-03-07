@@ -13,9 +13,9 @@
 					v-card(elevation='15')
 						v-img(:src='$store.getters.imgURL(season.poster_path, "poster", 4)' :lazy-src='$store.getters.imgURL(season.poster_path, "poster", 0)' :aspect-ratio='2/3')
 							template(v-slot:placeholder)
-								.d-flex.pa-3.fill-height.justify-center.align-center
+								v-row.pa-3.ma-0.fill-height(justify='center' align='center')
 									v-progress-circular(indeterminate)
-							v-container.fill-height.align-end.justify-center(fluid)
+							v-row.pa-3.ma-0.fill-height(justify='center' align='end')
 								v-fab-transition
 									v-btn(v-show='hover' fab small :href='`${$store.getters.imgURL(season.poster_path,"poster",6)}`' target='_blank')
 										v-icon mdi-download
