@@ -290,7 +290,7 @@
 
 	.v-img--blurred {
 		> .v-image__image {
-			filter: blur(15px);
+			filter: blur(7px);
 			transform: scale(1.2);
 		}
 	}
