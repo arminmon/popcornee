@@ -1,7 +1,16 @@
 <template lang="pug">
 	v-app(id='popcornee-app')
 		//- Application Bar
-		v-app-bar(app fixed :elevate-on-scroll='!$store.state.appBarCollapsed' :collapse='$store.state.appBarCollapsed' :clipped-left='!$vuetify.rtl' :clipped-right='$vuetify.rtl' :right='$vuetify.rtl' :left='!$vuetify.rtl')
+		v-app-bar(
+			app
+			fixed
+			:elevate-on-scroll='!appBar.collapsed'
+			:collapse='appBar.collapsed'
+			:clipped-left='!$vuetify.rtl'
+			:clipped-right='$vuetify.rtl'
+			:right='$vuetify.rtl'
+			:left='!$vuetify.rtl'
+			)
 			v-app-bar-nav-icon(@click='drawer = !drawer')
 			v-toolbar-title.font-weight-bold POPCORNEE
 			v-progress-linear(absolute bottom height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
@@ -228,7 +237,7 @@
 			}
 		}),
 		computed: {
-			...mapGetters(["progress"]),
+			...mapGetters(["progress", "appBar"]),
 			drawer: {
 				get: ({ $store }) => $store.state.drawer,
 				set(val) {

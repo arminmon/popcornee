@@ -1,7 +1,9 @@
 /* STATE (store stuff) */
 export const state = () => ({
 	drawer: false,
-	appBarCollapsed: false,
+	appBar: {
+		collapsed: false
+	},
 	progress: {
 		active: false,
 		value: 0,
@@ -19,7 +21,7 @@ export const mutations = {
 		state.drawer = value;
 	},
 	COLLAPSE_APP_BAR(state, value) {
-		state.appBarCollapsed = value;
+		state.appBar.collapsed = value;
 	},
 	SET_PROGRESS_ACTIVE(state, value) {
 		state.progress.active = value;
@@ -47,6 +49,7 @@ export const mutations = {
 
 /* GETTERS (return stuff from store) */
 export const getters = {
+	appBar: state => state.appBar,
 	progress: state => state.progress,
 	imgURL: state => (path, type, size) =>
 		path
