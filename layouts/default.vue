@@ -47,7 +47,8 @@
 					flat
 					height='67'
 					hide-details
-					single-line)
+					single-line
+					)
 					template(v-slot:prepend-inner)
 						v-btn.mx-1(icon @click='search.showModes = !search.showModes')
 							v-scale-transition(leave-absolute)
@@ -293,6 +294,7 @@
 			transform: scale(1.2);
 		}
 	}
+
 	.info-table {
 		tbody {
 			> tr {
