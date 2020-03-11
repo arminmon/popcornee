@@ -66,12 +66,12 @@
 				v-container(fluid)
 					v-data-iterator(:items='[person.movie_credits.cast, person.movie_credits.crew]' :options='{ tab: 0, view: "narrow" }' disable-pagination hide-default-footer)
 						template(v-slot:header='props')
-								v-btn-toggle(v-model='props.options.tab' mandatory)
 							v-toolbar(flat color='transparent')
+								v-btn-toggle(v-model='props.options.tab' borderless mandatory)
 									v-btn(v-if='props.items[0].length > 0') Cast
 									v-btn(v-if='props.items[1].length > 0') Crew
 								v-spacer
-								v-btn-toggle(v-model='props.options.view' mandatory)
+								v-btn-toggle(v-model='props.options.view' borderless mandatory)
 									v-btn(v-for='(view, key) of $utils.media.views' :key='key' :value='key')
 										v-icon(:class='view.class') {{view.icon}}
 						template(v-slot:default='props')
@@ -97,12 +97,12 @@
 				v-container(fluid)
 					v-data-iterator(:items='[person.tv_credits.cast, person.tv_credits.crew]' :options='{ tab: 0, view: "narrow" }' disable-pagination hide-default-footer)
 						template(v-slot:header='props')
-								v-btn-toggle(v-model='props.options.tab' mandatory)
 							v-toolbar(flat color='transparent')
+								v-btn-toggle(v-model='props.options.tab' borderless mandatory)
 									v-btn(v-if='props.items[0].length > 0') Cast
 									v-btn(v-if='props.items[1].length > 0') Crew
 								v-spacer
-								v-btn-toggle(v-model='props.options.view' mandatory)
+								v-btn-toggle(v-model='props.options.view' borderless mandatory)
 									v-btn(v-for='(view, key) of $utils.media.views' :key='key' :value='key')
 										v-icon(:class='view.class') {{view.icon}}
 						template(v-slot:default='props')
