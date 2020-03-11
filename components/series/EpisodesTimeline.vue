@@ -1,7 +1,7 @@
 <template lang="pug">
 	v-timeline(dense align-top)
 		v-timeline-item(right hide-dot)
-			v-toolbar(flat dense v-if='episodes.length > 0 || guestStarsAvailable || stillImageAvailable')
+			v-toolbar(flat dense color='transparent' v-if='episodes.length > 0 || guestStarsAvailable || stillImageAvailable')
 				.overline {{episodes.length}} {{episodes.length > 1 ? "Episodes" : "Episode"}}
 				v-spacer
 				v-btn-toggle(v-model='toggles' borderless multiple)
