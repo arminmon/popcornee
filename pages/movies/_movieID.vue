@@ -244,7 +244,7 @@
 					videos: {
 						title: "Videos",
 						to: "#tab__videos",
-						icon: "mdi-library-video",
+						icon: "mdi-filmstrip-box-multiple",
 						disabled: this.movie.videos.total_results < 1
 					},
 					reviews: {
