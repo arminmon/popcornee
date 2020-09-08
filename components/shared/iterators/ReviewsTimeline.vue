@@ -13,9 +13,9 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			reviews: Object
-		}
-	};
+export default {
+	props: {
+		reviews: { type: Object, default: undefined }
+	}
+}
 </script>

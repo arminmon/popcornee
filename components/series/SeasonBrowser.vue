@@ -40,7 +40,7 @@
 																v-list-item-content.pa-0
 																	v-list-item-title.font-weight-bold
 																		span {{season.name}}
-																	v-list-item-subtitle.overline.font-weight-regular 
+																	v-list-item-subtitle.overline.font-weight-regular
 																		span(v-if='season.air_date') {{new Date(season.air_date).toLocaleDateString("en-US", {year: "numeric", month: "long"})}}
 																		span.font-weight-light(v-else) (n/a)
 																	v-list-item-subtitle.overline
@@ -60,34 +60,34 @@
 </template>
 
 <script>
-	import SeasonPage from "~/components/series/SeasonPage";
-	export default {
-		components: {
-			SeasonPage
-		},
-		props: {
-			seasons: {
-				type: Array,
-				default: []
-			}
-		},
-		data: _ => ({
-			window: "index",
-			toggles: [],
-			showList: true,
-			loading: false
-		}),
-		computed: {
-			selected: {
-				get: ({ $route }) =>
-					$route.query && $route.query.season ? $route.query.season : null,
-				set(num) {
-					this.$router.replace({ hash: "#tab__seasons", query: { season: num } });
-				}
-			}
-		},
-		mounted() {
-			if (this.seasons.length == 1) this.selected = 1;
+import SeasonPage from '~/components/series/SeasonPage'
+export default {
+	components: {
+		SeasonPage
+	},
+	props: {
+		seasons: {
+			type: Array,
+			default: () => []
 		}
-	};
+	},
+	data: (_) => ({
+		window: 'index',
+		toggles: [],
+		showList: true,
+		loading: false
+	}),
+	computed: {
+		selected: {
+			get: ({ $route }) =>
+				$route.query && $route.query.season ? $route.query.season : null,
+			set(num) {
+				this.$router.replace({ hash: '#tab__seasons', query: { season: num } })
+			}
+		}
+	},
+	mounted() {
+		if (this.seasons.length === 1) this.selected = 1
+	}
+}
 </script>

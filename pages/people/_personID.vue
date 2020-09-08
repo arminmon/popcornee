@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-content.pt-0
+	v-main.pt-0
 		v-img(
 			:aspect-ratio='10'
 			src='/null.png'
@@ -81,16 +81,16 @@
 										v-col(v-for='item in props.items[0]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
 											media-card(:media='item' :view='props.options.view')
 												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.character') 
-														span.font-weight-thin as 
+													p.ma-0.overline.text-none(v-if='item.character')
+														span.font-weight-thin as
 														| {{item.character}}
 								v-tab-item(v-if='props.items[1].length > 0')
 									v-row(dense :no-gutters='$vuetify.breakpoint.smAndDown' justify='center')
 										v-col(v-for='item in props.items[1]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
 											media-card(:media='item' :view='props.options.view')
 												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.job') 
-														span.font-weight-thin as 
+													p.ma-0.overline.text-none(v-if='item.job')
+														span.font-weight-thin as
 														| {{item.job}}
 			//- Series ——————————————————————————————————————————————————————————————————————————— -//
 			v-tab-item(value='tab__series' v-if='!tabs.series.disabled')
@@ -112,16 +112,16 @@
 										v-col(v-for='item in props.items[0]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
 											media-card(:media='item' :view='props.options.view')
 												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.character') 
-														span.font-weight-thin as 
+													p.ma-0.overline.text-none(v-if='item.character')
+														span.font-weight-thin as
 														| {{item.character}}
 								v-tab-item(v-if='props.items[1].length > 0')
 									v-row(dense :no-gutters='$vuetify.breakpoint.smAndDown' justify='center')
 										v-col(v-for='item in props.items[1]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
 											media-card(:media='item' :view='props.options.view')
 												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.job') 
-														span.font-weight-thin as 
+													p.ma-0.overline.text-none(v-if='item.job')
+														span.font-weight-thin as
 														| {{item.job}}
 			//- Images ——————————————————————————————————————————————————————————————————————————— -//
 			v-tab-item(value='tab__images' v-if='!tabs.images.disabled')
@@ -141,76 +141,76 @@
 </template>
 
 <script>
-	import MediaCard from "~/components/shared/cards/MediaCard";
-	export default {
-		components: {
-			MediaCard
-		},
-		validate({ params }) {
-			return /^\d+$/.test(String(params.personID).split("-")[0]);
-		},
-		fetch: async ({ store }) => {
-			await store.dispatch("FETCH_CONFIGS");
-			await store.dispatch("FETCH_GENRES");
-		},
-		asyncData: ({ app, params, error }) =>
-			app.$api.tmdb
-				.get(`person/${String(params.personID).split("-")[0]}`, {
-					params: {
-						append_to_response: [
-							"movie_credits",
-							"tv_credits",
-							"external_ids",
-							"images"
-						].join()
-					}
-				})
-				.then(res => ({ person: res }))
-				.catch(e => error(e)),
-		head() {
+import MediaCard from '~/components/shared/cards/MediaCard'
+export default {
+	components: {
+		MediaCard
+	},
+	validate({ params }) {
+		return /^\d+$/.test(String(params.personID).split('-')[0])
+	},
+	fetch: async ({ store }) => {
+		await store.dispatch('FETCH_CONFIGS')
+		await store.dispatch('FETCH_GENRES')
+	},
+	asyncData: ({ app, params, error }) =>
+		app.$api.tmdb
+			.get(`person/${String(params.personID).split('-')[0]}`, {
+				params: {
+					append_to_response: [
+						'movie_credits',
+						'tv_credits',
+						'external_ids',
+						'images'
+					].join()
+				}
+			})
+			.then((res) => ({ person: res }))
+			.catch((e) => error(e)),
+	data: (_) => ({
+		tab: null
+	}),
+	computed: {
+		tabs() {
 			return {
-				title: this.person.name
-			};
-		},
-		data: _ => ({
-			tab: null
-		}),
-		computed: {
-			tabs() {
-				return {
-					info: {
-						title: "Info",
-						to: "#tab__info",
-						icon: "mdi-information-variant"
-					},
-					movies: {
-						title: "Movies",
-						to: "#tab__movies",
-						icon: "mdi-movie-open",
-						disabled:
-							this.person.movie_credits.cast.length < 1 &&
-							this.person.movie_credits.crew.length < 1
-					},
-					series: {
-						title: "Series",
-						to: "#tab__series",
-						icon: "mdi-television-classic",
-						disabled:
-							this.person.tv_credits.cast.length < 1 &&
-							this.person.tv_credits.crew.length < 1
-					},
-					images: {
-						title: "Images",
-						to: "#tab__images",
-						icon: "mdi-image-multiple",
-						disabled: this.person.images.profiles.length < 1
-					}
-				};
+				info: {
+					title: 'Info',
+					to: '#tab__info',
+					icon: 'mdi-information-variant'
+				},
+				movies: {
+					title: 'Movies',
+					to: '#tab__movies',
+					icon: 'mdi-movie-open',
+					disabled:
+						this.person.movie_credits.cast.length < 1 &&
+						this.person.movie_credits.crew.length < 1
+				},
+				series: {
+					title: 'Series',
+					to: '#tab__series',
+					icon: 'mdi-television-classic',
+					disabled:
+						this.person.tv_credits.cast.length < 1 &&
+						this.person.tv_credits.crew.length < 1
+				},
+				images: {
+					title: 'Images',
+					to: '#tab__images',
+					icon: 'mdi-image-multiple',
+					disabled: this.person.images.profiles.length < 1
+				}
 			}
-		},
-		mounted() {
-			this.$store.commit("COLLAPSE_APP_BAR", true);
-			if (this.$route.hash == "") this.$router.replace({ hash: "#tab__info" });
 		}
-	};
+	},
+	mounted() {
+		this.$store.commit('COLLAPSE_APP_BAR', true)
+		if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
+	},
+	head() {
+		return {
+			title: this.person.name
+		}
+	}
+}
 </script>

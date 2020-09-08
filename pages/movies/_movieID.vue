@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-content.pt-0
+	v-main.pt-0
 		v-img.v-img--blurred(
 			:aspect-ratio='10'
 			:src='$store.getters.imgURL(movie.backdrop_path, "backdrop", 0)'
@@ -156,121 +156,121 @@
 </template>
 
 <script>
-	import ReleasesDialog from "~/components/movies/dialogs/ReleasesDialog";
-	import MediaIterator from "~/components/shared/iterators/MediaIterator";
-	import CastIterator from "~/components/shared/iterators/CastIterator";
-	import CrewTable from "~/components/shared/iterators/CrewTable";
-	import VideosGrid from "~/components/shared/iterators/VideosGrid";
-	import ReviewsTimeline from "~/components/shared/iterators/ReviewsTimeline";
-	export default {
-		components: {
-			ReleasesDialog,
-			MediaIterator,
-			CastIterator,
-			CrewTable,
-			VideosGrid,
-			ReviewsTimeline
-		},
-		validate: ({ params }) => /^\d+$/.test(String(params.movieID).split("-")[0]),
-		fetch: async ({ store }) => {
-			await store.dispatch("FETCH_CONFIGS");
-			await store.dispatch("FETCH_GENRES");
-		},
-		asyncData: ({ app, params, error }) =>
-			app.$api.tmdb
-				.get(`movie/${String(params.movieID).split("-")[0]}`, {
-					params: {
-						append_to_response: [
-							"credits",
-							"keywords",
-							"external_ids",
-							"videos",
-							"recommendations",
-							"similar",
-							"release_dates",
-							"reviews"
-						].join()
-					}
-				})
-				.then(async res => {
-					if (res.release_dates && res.release_dates.results.length > 0)
-						res.release_dates.results.sort((a, b) =>
-							a.iso_3166_1 > b.iso_3166_1 ? 1 : -1
-						);
-					res.collection = null;
-					if (res.belongs_to_collection) {
-						res.collection = await app.$api.tmdb.get(
-							`collection/${res.belongs_to_collection.id}`
-						);
-						delete res.belongs_to_collection;
-					}
-					return { movie: res };
-				})
-				.catch(e => error(e)),
-		head() {
+import ReleasesDialog from '~/components/movies/dialogs/ReleasesDialog'
+import MediaIterator from '~/components/shared/iterators/MediaIterator'
+import CastIterator from '~/components/shared/iterators/CastIterator'
+import CrewTable from '~/components/shared/iterators/CrewTable'
+import VideosGrid from '~/components/shared/iterators/VideosGrid'
+import ReviewsTimeline from '~/components/shared/iterators/ReviewsTimeline'
+export default {
+	components: {
+		ReleasesDialog,
+		MediaIterator,
+		CastIterator,
+		CrewTable,
+		VideosGrid,
+		ReviewsTimeline
+	},
+	validate: ({ params }) => /^\d+$/.test(String(params.movieID).split('-')[0]),
+	fetch: async ({ store }) => {
+		await store.dispatch('FETCH_CONFIGS')
+		await store.dispatch('FETCH_GENRES')
+	},
+	asyncData: ({ app, params, error }) =>
+		app.$api.tmdb
+			.get(`movie/${String(params.movieID).split('-')[0]}`, {
+				params: {
+					append_to_response: [
+						'credits',
+						'keywords',
+						'external_ids',
+						'videos',
+						'recommendations',
+						'similar',
+						'release_dates',
+						'reviews'
+					].join()
+				}
+			})
+			.then(async (res) => {
+				if (res.release_dates && res.release_dates.results.length > 0)
+					res.release_dates.results.sort((a, b) =>
+						a.iso_3166_1 > b.iso_3166_1 ? 1 : -1
+					)
+				res.collection = null
+				if (res.belongs_to_collection) {
+					res.collection = await app.$api.tmdb.get(
+						`collection/${res.belongs_to_collection.id}`
+					)
+					delete res.belongs_to_collection
+				}
+				return { movie: res }
+			})
+			.catch((e) => error(e)),
+	data: (_) => ({
+		tab: null
+	}),
+	computed: {
+		tabs() {
 			return {
-				title: `${this.movie.title || this.movie.original_title} (${
-					this.movie.release_date
-						? new Date(this.movie.release_date).toLocaleDateString("en-US", {
-								year: "numeric"
-						  })
-						: "n/a"
-				})${this.movie.tagline ? " – " + this.movie.tagline : ""}`
-			};
+				info: {
+					title: 'Info',
+					to: '#tab__info',
+					icon: 'mdi-information-variant'
+				},
+				cast: {
+					title: 'Cast',
+					to: '#tab__cast',
+					icon: 'mdi-account-box-multiple',
+					disabled: this.movie.credits.cast.length < 1
+				},
+				crew: {
+					title: 'Crew',
+					to: '#tab__crew',
+					icon: 'mdi-account-group',
+					disabled: this.movie.credits.crew.length < 1
+				},
+				videos: {
+					title: 'Videos',
+					to: '#tab__videos',
+					icon: 'mdi-filmstrip-box-multiple',
+					disabled: this.movie.videos.total_results < 1
+				},
+				reviews: {
+					title: 'Reviews',
+					to: '#tab__reviews',
+					icon: 'mdi-android-messages',
+					disabled: this.movie.reviews.total_results < 1
+				},
+				similar: {
+					title: 'Similar',
+					to: '#tab__similar',
+					icon: 'mdi-approximately-equal-box',
+					disabled: this.movie.similar.total_results < 1
+				}
+			}
 		},
-		data: _ => ({
-			tab: null
-		}),
-		computed: {
-			tabs() {
-				return {
-					info: {
-						title: "Info",
-						to: "#tab__info",
-						icon: "mdi-information-variant"
-					},
-					cast: {
-						title: "Cast",
-						to: "#tab__cast",
-						icon: "mdi-account-box-multiple",
-						disabled: this.movie.credits.cast.length < 1
-					},
-					crew: {
-						title: "Crew",
-						to: "#tab__crew",
-						icon: "mdi-account-group",
-						disabled: this.movie.credits.crew.length < 1
-					},
-					videos: {
-						title: "Videos",
-						to: "#tab__videos",
-						icon: "mdi-filmstrip-box-multiple",
-						disabled: this.movie.videos.total_results < 1
-					},
-					reviews: {
-						title: "Reviews",
-						to: "#tab__reviews",
-						icon: "mdi-android-messages",
-						disabled: this.movie.reviews.total_results < 1
-					},
-					similar: {
-						title: "Similar",
-						to: "#tab__similar",
-						icon: "mdi-approximately-equal-box",
-						disabled: this.movie.similar.total_results < 1
-					}
-				};
-			},
-			visibleCast: ({ $vuetify }) =>
-				$vuetify.breakpoint.mdAndDown
-					? 4 - 1
-					: $vuetify.breakpoint.lgOnly
-					? 6 - 1
-					: 12 - 1
-		},
-		mounted() {
-			this.$store.commit("COLLAPSE_APP_BAR", true);
-			if (this.$route.hash == "") this.$router.replace({ hash: "#tab__info" });
+		visibleCast: ({ $vuetify }) =>
+			$vuetify.breakpoint.mdAndDown
+				? 4 - 1
+				: $vuetify.breakpoint.lgOnly
+				? 6 - 1
+				: 12 - 1
+	},
+	mounted() {
+		this.$store.commit('COLLAPSE_APP_BAR', true)
+		if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
+	},
+	head() {
+		return {
+			title: `${this.movie.title || this.movie.original_title} (${
+				this.movie.release_date
+					? new Date(this.movie.release_date).toLocaleDateString('en-US', {
+							year: 'numeric'
+					  })
+					: 'n/a'
+			})${this.movie.tagline ? ' – ' + this.movie.tagline : ''}`
 		}
-	};
+	}
+}
 </script>

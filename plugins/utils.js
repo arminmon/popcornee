@@ -1,28 +1,28 @@
-import slugify from "@sindresorhus/slugify";
+import slugify from '@sindresorhus/slugify'
 
-export default function({ $vuetify }, inject) {
-	const gradient = (dir = "", stops = []) =>
-		dir != "" && stops.length > 0
+export default function ({ $vuetify }, inject) {
+	const gradient = (dir = '', stops = []) =>
+		dir !== '' && stops.length > 0
 			? `${dir}, ${stops
 					.map(
-						stop =>
-							`rgba(${$vuetify.theme.dark ? "30,30,30" : "255,255,255"},${
+						(stop) =>
+							`rgba(${$vuetify.theme.dark ? '30,30,30' : '255,255,255'},${
 								stop.alpha
 							}) ${stop.pos}`
 					)
 					.join()}`
-			: null;
+			: null
 
 	const scrollTo = (target, delay = 0) =>
 		process && process.server
 			? null
-			: setTimeout(_ => $vuetify.goTo(target), delay);
+			: setTimeout((_) => $vuetify.goTo(target), delay)
 
 	const media = {
 		views: {
 			narrow: {
-				icon: "mdi-view-agenda",
-				class: "mdi-rotate-90",
+				icon: 'mdi-view-agenda',
+				class: 'mdi-rotate-90',
 				breakpoints: {
 					cols: 6,
 					sm: 4,
@@ -32,7 +32,7 @@ export default function({ $vuetify }, inject) {
 				}
 			},
 			wide: {
-				icon: "mdi-view-agenda",
+				icon: 'mdi-view-agenda',
 				breakpoints: {
 					cols: 12,
 					sm: 12,
@@ -42,6 +42,6 @@ export default function({ $vuetify }, inject) {
 				}
 			}
 		}
-	};
-	inject("utils", { gradient, scrollTo, media, slugify });
+	}
+	inject('utils', { gradient, scrollTo, media, slugify })
 }

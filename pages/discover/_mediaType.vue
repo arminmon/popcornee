@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-content
+	v-main
 		v-navigation-drawer(
 			v-model='queryDrawer'
 			app
@@ -30,12 +30,12 @@
 							v-fade-transition(leave-absolute)
 								span(v-show='!open')
 									span(v-if='withGenres.length == 0 && withoutGenres.length == 0')
-										span.font-weight-bold Any 
+										span.font-weight-bold Any
 										| Genres
 									span(v-else)
 										span.font-weight-bold(v-if='withGenres.length > 0') Include {{withGenres.length}}
-										span(v-if='withGenres.length > 0 && withoutGenres.length > 0')  and 
-										span.font-weight-bold(v-if='withoutGenres.length > 0') Exclude {{withoutGenres.length}} 
+										span(v-if='withGenres.length > 0 && withoutGenres.length > 0')  and
+										span.font-weight-bold(v-if='withoutGenres.length > 0') Exclude {{withoutGenres.length}}
 										span {{(withGenres.length + withoutGenres.length) > 1 ? " Genres" : " Genre"}}
 					v-expansion-panel-content
 						v-list.pa-0(dense)
@@ -52,7 +52,7 @@
 					v-expansion-panel-header
 						template(v-slot:default='{ open }')
 							span
-								| Sort by 
+								| Sort by
 								v-fade-transition
 									span(v-show='!open')
 										span.font-weight-bold {{sorts.find(sort => sort.value == sortBy).text}}
@@ -70,7 +70,7 @@
 							v-fade-transition(leave-absolute)
 								span(v-show='!open')
 									span
-										span.font-weight-bold {{withKeywords.length == 0 ? "Any" : withKeywords.length}} 
+										span.font-weight-bold {{withKeywords.length == 0 ? "Any" : withKeywords.length}}
 										| {{withKeywords.length <= 1 ? "Keyword" : "Keywords"}}
 					v-expansion-panel-content
 						v-autocomplete(
@@ -110,154 +110,156 @@
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
-	import MediaIterator from "~/components/shared/iterators/MediaIterator";
-	export default {
-		components: {
-			MediaIterator
-		},
-		fetch: async ({ store }) => {
-			await store.dispatch("FETCH_CONFIGS");
-			await store.dispatch("FETCH_GENRES");
-		},
-		validate: async ({ params, query, redirect }) => {
-			switch (params.mediaType) {
-				case "movies":
-					return true;
-				case "series":
-					return true;
-				case "tv":
-					return redirect({ params: { mediaType: "series" }, query: query });
-				case "movie":
-					return redirect({ params: { mediaType: "movies" }, query: query });
-				default:
-					return redirect("/discover");
-			}
-		},
-		asyncData: ({ app, params, query, store, error }) =>
-			app.$api.tmdb
-				.get(`discover/${params.mediaType == "movies" ? "movie" : "tv"}`, {
-					params: query
-				})
-				.then(async res => {
-					// Generate genres from store
-					let genres = store.state.genres[params.mediaType].map(genre => ({
-						id: genre.id.toString(),
-						name: genre.name,
-						with: query.with_genres
-							? String(query.with_genres)
-									.split(",")
-									.find(id => id == String(genre.id))
-							: false,
-						without: query.without_genres
-							? String(query.without_genres)
-									.split(",")
-									.find(id => id == String(genre.id))
-							: false
-					}));
-					// Fetch keywords from api
-					let withKeywords = [];
-					if (query.with_keywords) {
-						let keyword = null;
-						for (let keywordID of String(query.with_keywords).split(",")) {
-							keyword = await app.$api.tmdb.get(`keyword/${keywordID}`);
-							withKeywords.push(keyword);
-						}
-					}
-					return {
-						discovery: res,
-						mediaType: params.mediaType == "movies" ? 0 : 1,
-						queried: {
-							with_genres: query.with_genres || "",
-							without_genres: query.without_genres || "",
-							sort_by: query.sort_by ? query.sort_by : "popularity.desc",
-							with_keywords: query.with_keywords || ""
-						},
-						genres,
-						withKeywords,
-						sortBy: query.sort_by ? query.sort_by.split(".")[0] : "popularity",
-						orderDesc: query.sort_by
-							? query.sort_by.split(".")[1] == "desc"
-							: true
-					};
-				})
-				.catch(e => error(e)),
-		head() {
-			return {
-				title: `Discover ${this.$route.params.mediaType.replace(/^\w/, c =>
-					c.toUpperCase()
-				)}`
-			};
-		},
-		watchQuery: true,
-		data: _ => ({
-			drawer: false,
-			panels: [0, 1, 2],
-			sorts: [
-				{ text: "Popularity", value: "popularity" },
-				{ text: "Release Date", value: "release_date" },
-				{ text: "Revenue", value: "revenue" },
-				{ text: "Vote Count", value: "vote_count" }
-			],
-			searchKeywords: null,
-			keywords: [],
-			loadingKeywords: false
-		}),
-		computed: {
-			withGenres() {
-				return this.genres.filter(genre => genre.with).map(genre => genre.id);
-			},
-			withoutGenres() {
-				return this.genres.filter(genre => genre.without).map(genre => genre.id);
-			},
-			query() {
-				return {
-					with_genres: this.withGenres.join(),
-					without_genres: this.withoutGenres.join(),
-					sort_by: `${this.sortBy}.${this.orderDesc ? "desc" : "asc"}`,
-					with_keywords: this.withKeywords.map(keyword => keyword.id).join(",")
-				};
-			},
-			...mapGetters(["progress"]),
-			queryDrawer: {
-				get() {
-					return (
-						!this.$store.state.drawer &&
-						(this.$vuetify.breakpoint.mdAndUp || this.drawer)
-					);
-				},
-				set(val) {
-					if (val) {
-						this.$store.commit("SET_DRAWER", false);
-						this.drawer = true;
-					} else {
-						this.drawer = this.$vuetify.breakpoint.mdAndUp;
+import { mapGetters } from 'vuex'
+import MediaIterator from '~/components/shared/iterators/MediaIterator'
+export default {
+	components: {
+		MediaIterator
+	},
+	fetch: async ({ store }) => {
+		await store.dispatch('FETCH_CONFIGS')
+		await store.dispatch('FETCH_GENRES')
+	},
+	validate: ({ params, query, redirect }) => {
+		switch (params.mediaType) {
+			case 'movies':
+				return true
+			case 'series':
+				return true
+			case 'tv':
+				return redirect({ params: { mediaType: 'series' }, query })
+			case 'movie':
+				return redirect({ params: { mediaType: 'movies' }, query })
+			default:
+				return redirect('/discover')
+		}
+	},
+	asyncData: ({ app, params, query, store, error }) =>
+		app.$api.tmdb
+			.get(`discover/${params.mediaType === 'movies' ? 'movie' : 'tv'}`, {
+				params: query
+			})
+			.then(async (res) => {
+				// Generate genres from store
+				const genres = store.state.genres[params.mediaType].map((genre) => ({
+					id: genre.id.toString(),
+					name: genre.name,
+					with: query.with_genres
+						? String(query.with_genres)
+								.split(',')
+								.find((id) => id === String(genre.id))
+						: false,
+					without: query.without_genres
+						? String(query.without_genres)
+								.split(',')
+								.find((id) => id === String(genre.id))
+						: false
+				}))
+				// Fetch keywords from api
+				const withKeywords = []
+				if (query.with_keywords) {
+					let keyword = null
+					for (const keywordID of String(query.with_keywords).split(',')) {
+						keyword = await app.$api.tmdb.get(`keyword/${keywordID}`)
+						withKeywords.push(keyword)
 					}
 				}
+				return {
+					discovery: res,
+					mediaType: params.mediaType === 'movies' ? 0 : 1,
+					queried: {
+						with_genres: query.with_genres || '',
+						without_genres: query.without_genres || '',
+						sort_by: query.sort_by ? query.sort_by : 'popularity.desc',
+						with_keywords: query.with_keywords || ''
+					},
+					genres,
+					withKeywords,
+					sortBy: query.sort_by ? query.sort_by.split('.')[0] : 'popularity',
+					orderDesc: query.sort_by
+						? query.sort_by.split('.')[1] === 'desc'
+						: true
+				}
+			})
+			.catch((e) => error(e)),
+	data: (_) => ({
+		drawer: false,
+		panels: [0, 1, 2],
+		sorts: [
+			{ text: 'Popularity', value: 'popularity' },
+			{ text: 'Release Date', value: 'release_date' },
+			{ text: 'Revenue', value: 'revenue' },
+			{ text: 'Vote Count', value: 'vote_count' }
+		],
+		searchKeywords: null,
+		keywords: [],
+		loadingKeywords: false
+	}),
+	computed: {
+		withGenres() {
+			return this.genres.filter((genre) => genre.with).map((genre) => genre.id)
+		},
+		withoutGenres() {
+			return this.genres
+				.filter((genre) => genre.without)
+				.map((genre) => genre.id)
+		},
+		query() {
+			return {
+				with_genres: this.withGenres.join(),
+				without_genres: this.withoutGenres.join(),
+				sort_by: `${this.sortBy}.${this.orderDesc ? 'desc' : 'asc'}`,
+				with_keywords: this.withKeywords.map((keyword) => keyword.id).join(',')
 			}
 		},
-		watch: {
-			mediaType(val) {
-				this.$router.push({ params: { mediaType: val ? "series" : "movies" } });
+		...mapGetters(['progress']),
+		queryDrawer: {
+			get() {
+				return (
+					!this.$store.state.drawer &&
+					(this.$vuetify.breakpoint.mdAndUp || this.drawer)
+				)
 			},
-			async searchKeywords(keyword) {
-				if (keyword)
-					try {
-						this.loadingKeywords = true;
-						let res = await this.$api.tmdb.get("search/keyword", {
-							params: { query: keyword }
-						});
-						this.keywords = res.results;
-					} catch (e) {
-						this.loadingKeywords = "error";
-					} finally {
-						this.loadingKeywords = false;
-					}
+			set(val) {
+				if (val) {
+					this.$store.commit('SET_DRAWER', false)
+					this.drawer = true
+				} else {
+					this.drawer = this.$vuetify.breakpoint.mdAndUp
+				}
 			}
-		},
-		mounted() {
-			this.$store.commit("SET_DRAWER", false);
-			this.$store.commit("COLLAPSE_APP_BAR", false);
 		}
-	};
+	},
+	watch: {
+		mediaType(val) {
+			this.$router.push({ params: { mediaType: val ? 'series' : 'movies' } })
+		},
+		async searchKeywords(keyword) {
+			if (keyword)
+				try {
+					this.loadingKeywords = true
+					const res = await this.$api.tmdb.get('search/keyword', {
+						params: { query: keyword }
+					})
+					this.keywords = res.results
+				} catch (e) {
+					this.loadingKeywords = 'error'
+				} finally {
+					this.loadingKeywords = false
+				}
+		}
+	},
+	watchQuery: true,
+	mounted() {
+		this.$store.commit('SET_DRAWER', false)
+		this.$store.commit('COLLAPSE_APP_BAR', false)
+	},
+	head() {
+		return {
+			title: `Discover ${this.$route.params.mediaType.replace(/^\w/, (c) =>
+				c.toUpperCase()
+			)}`
+		}
+	}
+}
 </script>

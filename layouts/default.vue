@@ -18,7 +18,7 @@
 			v-btn(icon @click='$vuetify.theme.dark = !$vuetify.theme.dark')
 				v-icon {{$vuetify.theme.dark ? "mdi-brightness-5" : "mdi-brightness-3"}}
 		//- Navigation Drawer
-		v-navigation-drawer.v-card.elevation-12(
+		v-navigation-drawer.rounded.elevation-12(
 			v-model='drawer'
 			app
 			temporary
@@ -127,8 +127,8 @@
 					//- Search Tools
 					v-expand-transition
 						.overline.text-center.pa-2(v-show='(search.results.length > 0 && search.loading == false) && (search.query != searched.query || search.mode.value != searched.mode.value)')
-							span Results for 
-							span.font-italic.font-weight-bold "{{searched.query}}" 
+							span Results for
+							span.font-italic.font-weight-bold "{{searched.query}}"
 							span in {{searched.mode.title}}
 							v-icon.d-block(small) mdi-chevron-down
 					v-scroll-y-transition
@@ -142,7 +142,7 @@
 											v-img(v-if='result.profile_path' :src='$store.getters.imgURL(result.profile_path, "profile", 1)')
 											v-icon(v-else style='opacity: .25') mdi-account-circle
 										v-list-item-content
-											v-list-item-title.font-weight-bold {{result.name}} 
+											v-list-item-title.font-weight-bold {{result.name}}
 											v-list-item-subtitle.overline {{result.known_for_department}}
 											v-list-item-subtitle
 												v-btn(icon x-small @click='dialog = false' nuxt :to='`/people/${result.id}`')
@@ -193,8 +193,8 @@
 										v-list-item-subtitle {{result.overview}}
 					v-expand-transition
 						.text-center.overline.pa-3(v-show='search.results.length == 0 && search.query == searched.query && search.mode.value == searched.mode.value && search.loading == false')
-							span Found nothing for 
-							span.font-italic.font-weight-bold "{{searched.query}}" 
+							span Found nothing for
+							span.font-italic.font-weight-bold "{{searched.query}}"
 							span in {{searched.mode.title}}
 		//- Content
 		nuxt
@@ -203,115 +203,115 @@
 </template>
 
 <script>
-	import { mapGetters } from "vuex";
-	export default {
-		data: _ => ({
-			search: {
-				query: "",
-				loading: false,
-				results: [],
-				showModes: false,
-				mode: {
-					value: "multi",
-					title: "Movies, Series & People",
-					icon: "mdi-magnify"
+import { mapGetters } from 'vuex'
+export default {
+	data: (_) => ({
+		search: {
+			query: '',
+			loading: false,
+			results: [],
+			showModes: false,
+			mode: {
+				value: 'multi',
+				title: 'Movies, Series & People',
+				icon: 'mdi-magnify'
+			},
+			modes: [
+				{
+					value: 'multi',
+					title: 'Movies, Series & People',
+					icon: 'mdi-magnify'
 				},
-				modes: [
-					{
-						value: "multi",
-						title: "Movies, Series & People",
-						icon: "mdi-magnify"
-					},
-					{ value: "movie", title: "Movies", icon: "mdi-movie-open" },
-					{ value: "tv", title: "Series", icon: "mdi-television-classic" },
-					{
-						value: "collection",
-						title: "Collections",
-						icon: "mdi-checkbox-multiple-blank"
-					},
-					{ value: "person", title: "People", icon: "mdi-account-box" }
-				]
-			},
-			searched: {
-				query: "",
-				mode: ""
-			}
-		}),
-		computed: {
-			...mapGetters(["progress", "appBar"]),
-			drawer: {
-				get: ({ $store }) => $store.state.drawer,
-				set(val) {
-					this.$store.commit("SET_DRAWER", val);
-				}
-			},
-			window() {
-				return this.search.query != "" &&
-					this.search.query != null &&
-					this.searched.query != ""
-					? "search"
-					: "nav";
+				{ value: 'movie', title: 'Movies', icon: 'mdi-movie-open' },
+				{ value: 'tv', title: 'Series', icon: 'mdi-television-classic' },
+				{
+					value: 'collection',
+					title: 'Collections',
+					icon: 'mdi-checkbox-multiple-blank'
+				},
+				{ value: 'person', title: 'People', icon: 'mdi-account-box' }
+			]
+		},
+		searched: {
+			query: '',
+			mode: ''
+		}
+	}),
+	computed: {
+		...mapGetters(['progress', 'appBar']),
+		drawer: {
+			get: ({ $store }) => $store.state.drawer,
+			set(val) {
+				this.$store.commit('SET_DRAWER', val)
 			}
 		},
-		methods: {
-			async startSearch() {
-				if (this.search.query != "" && this.search.query != null)
-					try {
-						this.search.loading = true;
-						let response = await this.$api.tmdb.get(
-							`search/${this.search.mode.value}`,
-							{
-								params: {
-									query: this.search.query
-								}
-							}
-						);
-						this.searched.query = this.search.query;
-						this.searched.mode = this.search.mode;
-						this.search.loading = "success";
-						this.search.results = response.results;
-						if (response.results.length == 0) throw new Error();
-					} catch (e) {
-						this.search.fetching = "error";
-					} finally {
-						this.search.loading = false;
-					}
-			}
+		window() {
+			return this.search.query !== '' &&
+				this.search.query !== null &&
+				this.searched.query !== ''
+				? 'search'
+				: 'nav'
 		}
-	};
+	},
+	methods: {
+		async startSearch() {
+			if (this.search.query !== '' && this.search.query != null)
+				try {
+					this.search.loading = true
+					const response = await this.$api.tmdb.get(
+						`search/${this.search.mode.value}`,
+						{
+							params: {
+								query: this.search.query
+							}
+						}
+					)
+					this.searched.query = this.search.query
+					this.searched.mode = this.search.mode
+					this.search.loading = 'success'
+					this.search.results = response.results
+					if (response.results.length === 0) throw new Error('empty')
+				} catch (e) {
+					this.search.fetching = 'error'
+				} finally {
+					this.search.loading = false
+				}
+		}
+	}
+}
 </script>
 
 <style lang="scss">
-	.v-navigation-drawer,
-	.v-bottom-navigation,
-	.v-app-bar {
-		backdrop-filter: blur(7px);
-	}
+.v-navigation-drawer,
+.v-bottom-navigation,
+.v-app-bar {
+	backdrop-filter: blur(7px);
+}
 
-	.v-img--blurred {
-		> .v-image__image {
-			filter: blur(7px);
-			transform: scale(1.2);
-		}
+.v-img--blurred {
+	> .v-image__image {
+		filter: blur(7px);
+		transform: scale(1.2);
 	}
+}
 
-	.info-table {
-		tbody {
-			> tr {
-				td {
-					&:first-child {
-						min-width: 100px;
-						max-width: 25%;
-						width: 25%;
-					}
+.info-table {
+	tbody {
+		> tr {
+			td {
+				&:first-child {
+					min-width: 100px;
+					max-width: 25%;
+					width: 25%;
 				}
 			}
 		}
 	}
-	// Fix grid bug
-	// .container.fill-height {
-	// 	> .row {
-	// 		max-width: initial;
-	// 	}
-	// }
+}
+// Fix grid bug
+// .container.fill-height {
+// 	> .row {
+// 		max-width: initial;
+// 	}
+// }
 </style>

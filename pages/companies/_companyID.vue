@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-content.pt-0
+	v-main.pt-0
 		v-img(
 			:aspect-ratio='10'
 			src='/null.png'
@@ -34,7 +34,7 @@
 								td {{company.headquarters}}
 							tr(v-if='company.origin_country')
 								td.text-right.caption.font-weight-light Country of Origin
-								td 
+								td
 									v-chip {{company.origin_country}}
 			//- Images ——————————————————————————————————————————————————————————————————————————— -//
 			v-tab-item(value='tab__images' v-if='company.images.logos.length > 0')
@@ -54,47 +54,47 @@
 </template>
 
 <script>
-	export default {
-		validate: ({ params }) =>
-			/^\d+$/.test(String(params.companyID).split("-")[0]),
-		fetch: async ({ store }) => {
-			await store.dispatch("FETCH_CONFIGS");
-		},
-		asyncData: ({ app, params, error }) =>
-			app.$api.tmdb
-				.get(`company/${String(params.companyID).split("-")[0]}`, {
-					params: { append_to_response: "images" }
-				})
-				.then(res => ({ company: res }))
-				.catch(e => error(e)),
-		head() {
-			return {
-				title: this.company.name
-			};
-		},
-		data: _ => ({
-			tab: null
-		}),
-		computed: {
-			tabs() {
-				return [
-					{
-						title: "Info",
-						to: "#tab__info",
-						icon: "mdi-information-variant"
-					},
-					{
-						title: "Images",
-						to: "#tab__images",
-						icon: "mdi-image-multiple",
-						disabled: this.company.images.logos.length < 1
-					}
-				];
-			}
-		},
-		mounted() {
-			this.$store.commit("COLLAPSE_APP_BAR", true);
-			if (this.$route.hash == "") this.$router.replace({ hash: "#tab__info" });
+export default {
+	validate: ({ params }) =>
+		/^\d+$/.test(String(params.companyID).split('-')[0]),
+	fetch: async ({ store }) => {
+		await store.dispatch('FETCH_CONFIGS')
+	},
+	asyncData: ({ app, params, error }) =>
+		app.$api.tmdb
+			.get(`company/${String(params.companyID).split('-')[0]}`, {
+				params: { append_to_response: 'images' }
+			})
+			.then((res) => ({ company: res }))
+			.catch((e) => error(e)),
+	data: (_) => ({
+		tab: null
+	}),
+	computed: {
+		tabs() {
+			return [
+				{
+					title: 'Info',
+					to: '#tab__info',
+					icon: 'mdi-information-variant'
+				},
+				{
+					title: 'Images',
+					to: '#tab__images',
+					icon: 'mdi-image-multiple',
+					disabled: this.company.images.logos.length < 1
+				}
+			]
 		}
-	};
+	},
+	mounted() {
+		this.$store.commit('COLLAPSE_APP_BAR', true)
+		if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
+	},
+	head() {
+		return {
+			title: this.company.name
+		}
+	}
+}
 </script>

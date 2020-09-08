@@ -23,41 +23,44 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			releases: Array
-		},
-		data: _ => ({
-			dialog: false,
-			window: "US"
-		}),
-		filters: {
-			ReleaseType: index => {
-				switch (index) {
-					case 1:
-						return "Premiere";
-					case 2:
-						return "Theatrical (limited)";
-					case 3:
-						return "Theatrical";
-					case 4:
-						return "Digital";
-					case 5:
-						return "Physical";
-					case 6:
-						return "TV";
-					default:
-						return "Unknown Release";
-				}
+export default {
+	filters: {
+		ReleaseType: (index) => {
+			switch (index) {
+				case 1:
+					return 'Premiere'
+				case 2:
+					return 'Theatrical (limited)'
+				case 3:
+					return 'Theatrical'
+				case 4:
+					return 'Digital'
+				case 5:
+					return 'Physical'
+				case 6:
+					return 'TV'
+				default:
+					return 'Unknown Release'
 			}
-		},
-		mounted() {
-			if (this.releases.length > 0) this.window = this.releases[0].iso_3166_1;
-			for (let release of this.releases)
-				if (release.iso_3166_1 == "US") {
-					this.window = "US";
-					break;
-				}
 		}
-	};
+	},
+	props: {
+		releases: {
+			type: Array,
+			default: () => []
+		}
+	},
+	data: (_) => ({
+		dialog: false,
+		window: 'US'
+	}),
+	mounted() {
+		if (this.releases.length > 0) this.window = this.releases[0].iso_3166_1
+		for (const release of this.releases)
+			if (release.iso_3166_1 === 'US') {
+				this.window = 'US'
+				break
+			}
+	}
+}
 </script>

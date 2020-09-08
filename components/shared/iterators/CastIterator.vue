@@ -17,7 +17,7 @@
 												v-progress-circular(indeterminate style='opacity: .25')
 									v-icon(v-else x-large disabled :class='{ "darken-2": $vuetify.theme.dark, "lighten-3": !$vuetify.theme.dark }') mdi-account
 								.title {{person.name}}
-								.subtitle-2.font-weight-thin as 
+								.subtitle-2.font-weight-thin as
 								.subtitle-1 {{person.character}}
 			template(v-slot:no-results)
 				.pa-3.text-center
@@ -27,15 +27,15 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			cast: Array
-		},
-		data() {
-			return {
-				search: "",
-				keys: ["name", "character"]
-			};
+export default {
+	props: {
+		cast: { type: Array, default: () => [] }
+	},
+	data() {
+		return {
+			search: '',
+			keys: ['name', 'character']
 		}
-	};
+	}
+}
 </script>

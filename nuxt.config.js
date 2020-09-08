@@ -1,47 +1,53 @@
-require("dotenv").config();
-import colors from "vuetify/es5/util/colors";
+import colors from 'vuetify/es5/util/colors'
+require('dotenv').config()
 
 export default {
-	mode: "universal",
+	mode: 'universal',
 	head: {
-		titleTemplate: "%s | POPCORNEE",
-		title: "",
+		titleTemplate: '%s | POPCORNEE',
+		title: '',
 		meta: [
-			{ charset: "utf-8" },
-			{ name: "viewport", content: "width=device-width, initial-scale=1" },
+			{ charset: 'utf-8' },
+			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			{
-				hid: "description",
-				name: "description",
-				content: process.env.npm_package_description || ""
+				hid: 'description',
+				name: 'description',
+				content: process.env.npm_package_description || ''
 			}
 		],
-		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
 	},
 
-	loading: "~/components/layout/Progress.vue",
+	loading: '~/components/layout/Progress.vue',
 
 	// css: [],
 
-	plugins: ["~plugins/api", "~plugins/utils", "~plugins/vue-masonry-css"],
+	plugins: ['~plugins/api', '~plugins/utils', '~plugins/vue-masonry-css'],
 
-	buildModules: ["@nuxtjs/dotenv", "nuxt-webfontloader", "@nuxtjs/vuetify"],
+	buildModules: [
+		'@nuxtjs/eslint-module',
+		'@nuxtjs/stylelint-module',
+		'@nuxtjs/dotenv',
+		'nuxt-webfontloader',
+		'@nuxtjs/vuetify'
+	],
 
 	modules: [],
 
 	webfontloader: {
 		google: {
-			families: ["Dosis:200,300,400,700,800"]
+			families: ['Dosis:200,300,400,700,800']
 		}
 	},
 
 	vuetify: {
 		treeShake: true,
-		customVariables: ["~/assets/vuetify/vars.scss"],
+		customVariables: ['~/assets/vuetify/vars.scss'],
 		defaultAssets: {
 			font: {
-				family: "Dosis"
+				family: 'Dosis'
 			},
-			icons: "mdi"
+			icons: 'mdi'
 		},
 		theme: {
 			dark: false,
@@ -72,7 +78,7 @@ export default {
 	},
 
 	build: {
-		transpileDependencies: ["vuetify"]
+		transpileDependencies: ['vuetify']
 		// extend(config, ctx) {}
 	}
-};
+}

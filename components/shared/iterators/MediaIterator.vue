@@ -21,18 +21,19 @@
 </template>
 
 <script>
-import MediaCard from "~/components/shared/cards/MediaCard";
+import MediaCard from '~/components/shared/cards/MediaCard'
 export default {
 	components: {
 		MediaCard
 	},
 	props: {
 		media: {
-			type: null
+			type: Object,
+			default: undefined
 		},
 		defaultView: {
 			type: String,
-			default: "narrow"
+			default: 'narrow'
 		},
 		dense: {
 			type: Boolean,
@@ -40,15 +41,15 @@ export default {
 		},
 		justify: {
 			type: String,
-			default: "center"
+			default: 'center'
 		},
 		align: {
 			type: String,
-			default: "center"
+			default: 'center'
 		},
 		title: {
 			type: String,
-			default: ""
+			default: ''
 		},
 		hideHeader: {
 			type: Boolean,
@@ -58,48 +59,48 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		resource: null,
-		query: null
+		resource: { type: String, default: null },
+		query: { type: Object, default: null }
 	},
-	data: _ => ({
+	data: (_) => ({
 		fetching: false,
-		view: "narrow",
+		view: 'narrow',
 		results: [],
 		page: 1,
 		totalPages: 1
 	}),
+	computed: {
+		items() {
+			return this.media.results ? this.media.results : this.media
+		}
+	},
+	mounted() {
+		this.reset()
+	},
 	methods: {
 		async fetchMore() {
 			try {
-				this.fetching = true;
-				this.page++;
-				let response = await this.$api.tmdb.get(this.resource, {
+				this.fetching = true
+				this.page++
+				const response = await this.$api.tmdb.get(this.resource, {
 					params: {
 						...this.query,
 						page: this.page
 					}
-				});
-				this.results = [...this.results, ...response.results];
+				})
+				this.results = [...this.results, ...response.results]
 			} catch (e) {
-				this.page--;
+				this.page--
 			} finally {
-				this.fetching = false;
+				this.fetching = false
 			}
 		},
 		reset() {
-			this.view = this.defaultView;
-			this.page = this.media.results ? this.media.page : 1;
-			this.totalPages = this.media.results ? this.media.total_pages : 1;
-			this.results = [];
+			this.view = this.defaultView
+			this.page = this.media.results ? this.media.page : 1
+			this.totalPages = this.media.results ? this.media.total_pages : 1
+			this.results = []
 		}
-	},
-	computed: {
-		items() {
-			return this.media.results ? this.media.results : this.media;
-		}
-	},
-	mounted() {
-		this.reset();
 	}
-};
+}
 </script>

@@ -31,7 +31,7 @@
 							v-list-item-content.pa-0
 								v-list-item-title.font-weight-bold(:class='{ "text-wrap": view == "wide" }') {{media.title || media.original_title || media.name || media.original_name}}
 								v-list-item-subtitle.overline
-									span.font-weight-light(v-if='media.first_air_date') Since 
+									span.font-weight-light(v-if='media.first_air_date') Since
 									span.font-weight-regular {{media.release_date || media.first_air_date ? new Date(media.release_date || media.first_air_date).toLocaleDateString("en-US", {year: "numeric", month: "short"}) : "n/a"}}
 								v-rating(v-show='view == "wide"' v-if='media.vote_average' :value='media.vote_average/2' length='5' half-increments readonly dense x-small color='orange' :background-color='$vuetify.theme.dark ? "grey darken-1" : "grey lighten-5"')
 								p.media-card--overview.caption.pa-1(v-show='view == "wide"') {{media.overview}}
@@ -41,26 +41,26 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			media: Object,
-			view: { type: String, default: "narrow" },
-			dense: { type: Boolean, default: false },
-			selected: { type: Boolean, default: false },
-			disabled: { type: Boolean, default: false }
-		}
-	};
+export default {
+	props: {
+		media: { type: Object, default: undefined },
+		view: { type: String, default: 'narrow' },
+		dense: { type: Boolean, default: false },
+		selected: { type: Boolean, default: false },
+		disabled: { type: Boolean, default: false }
+	}
+}
 </script>
 
 <style lang="scss">
-	.media-card {
-		p.media-card--overview {
-			display: -webkit-box;
-			overflow-wrap: break-word;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			-webkit-line-clamp: 3;
-			-webkit-box-orient: vertical;
-		}
+.media-card {
+	p.media-card--overview {
+		display: -webkit-box;
+		overflow-wrap: break-word;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
 	}
+}
 </style>

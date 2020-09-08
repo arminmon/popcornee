@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-content
+	v-main
 		v-container
 			v-row.pb-12(align='center' justify='center')
 				v-card(color='error' elevation='16')
@@ -14,15 +14,15 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			error: {
-				type: Object,
-				default: null
-			}
-		},
-		head() {
-			return { title: `ERROR ${this.error.statusCode}` };
+export default {
+	props: {
+		error: {
+			type: Object,
+			default: null
 		}
-	};
+	},
+	head() {
+		return { title: `ERROR ${this.error.statusCode}` }
+	}
+}
 </script>

@@ -12,27 +12,31 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			video: Object
-		},
-		computed: {
-			site() {
-				switch (this.video.site) {
-					case "YouTube":
-						return {
-							link: `https://www.youtube.com/watch?v=${this.video.key}`,
-							img: `https://img.youtube.com/vi/${this.video.key}/0.jpg`,
-							color: "#ff0000"
-						};
-					case "Vimeo":
-						return {
-							link: `https://www.youtube.com/watch?v=${this.video.key}`,
-							img: "/null.png",
-							color: "#1ab7ea"
-						};
-				}
+export default {
+	props: {
+		video: { type: Object, default: undefined }
+	},
+	computed: {
+		site() {
+			let site = {}
+			switch (this.video.site) {
+				case 'YouTube':
+					site = {
+						link: `https://www.youtube.com/watch?v=${this.video.key}`,
+						img: `https://img.youtube.com/vi/${this.video.key}/0.jpg`,
+						color: '#ff0000'
+					}
+					break
+				case 'Vimeo':
+					site = {
+						link: `https://www.youtube.com/watch?v=${this.video.key}`,
+						img: '/null.png',
+						color: '#1ab7ea'
+					}
+					break
 			}
+			return site
 		}
-	};
+	}
+}
 </script>

@@ -27,7 +27,7 @@
 		v-tabs-items(v-model='tab')
 			//- Episodes Tab ——————————————————————————————————————————————————————————————————————————— -//
 			v-tab-item(value='tab__episodes')
-				episodes-timeline(:episodes='season.episodes' :seasonNum='season.season_number')
+				episodes-timeline(:episodes='season.episodes')
 			//- Cast Tab ——————————————————————————————————————————————————————————————————————————— -//
 			v-tab-item(value='tab__cast' v-if='!tabs.cast.disabled')
 				cast-iterator(:cast='season.credits.cast')
@@ -40,86 +40,89 @@
 </template>
 
 <script>
-	import EpisodesTimeline from "~/components/series/EpisodesTimeline";
-	import CastIterator from "~/components/shared/iterators/CastIterator";
-	import CrewTable from "~/components/shared/iterators/CrewTable";
-	import VideosGrid from "~/components/shared/iterators/VideosGrid";
-	export default {
-		components: {
-			EpisodesTimeline,
-			CastIterator,
-			CrewTable,
-			VideosGrid
-		},
-		props: {
-			seasonNum: null
-		},
-		data: _ => ({
-			tab: "tab__episodes",
-			season: null
-		}),
-		computed: {
-			tabs() {
-				return {
-					episodes: {
-						title: "Episodes",
-						to: "tab__episodes",
-						icon: "mdi-format-list-bulleted"
-					},
-					cast: {
-						title: "Cast",
-						to: "tab__cast",
-						icon: "mdi-account-box-multiple",
-						disabled: this.season.credits.cast.length < 1
-					},
-					crew: {
-						title: "Crew",
-						to: "tab__crew",
-						icon: "mdi-account-group",
-						disabled: this.season.credits.crew.length < 1
-					},
-					videos: {
-						title: "Videos",
-						to: "tab__videos",
-						icon: "mdi-library-video",
-						disabled: this.season.videos.total_results < 1
-					}
-				};
-			}
-		},
-		watch: {
-			seasonNum: {
-				async handler(seasonNum) {
-					try {
-						if (seasonNum !== null) {
-							this.$emit("changeLoadingState", true);
-							this.season = await this.$api.tmdb.get(
-								`tv/${this.$store.state.series.id}/season/${seasonNum}`,
-								{
-									params: {
-										append_to_response: [
-											"credits",
-											"external_ids",
-											"videos"
-										].join()
-									}
-								}
-							);
-							this.$emit("changeLoadingState", "success");
-							this.$emit("changeWindow", "season");
-							this.$utils.scrollTo("#season-page", 10);
-						} else {
-							this.$emit("changeWindow", "index");
-							this.season = null;
-						}
-					} catch (e) {
-						this.$emit("changeLoadingState", "error");
-					} finally {
-						setTimeout(_ => this.$emit("changeLoadingState", false), 1000);
-					}
+import EpisodesTimeline from '~/components/series/EpisodesTimeline'
+import CastIterator from '~/components/shared/iterators/CastIterator'
+import CrewTable from '~/components/shared/iterators/CrewTable'
+import VideosGrid from '~/components/shared/iterators/VideosGrid'
+export default {
+	components: {
+		EpisodesTimeline,
+		CastIterator,
+		CrewTable,
+		VideosGrid
+	},
+	props: {
+		seasonNum: {
+			type: String,
+			default: null
+		}
+	},
+	data: (_) => ({
+		tab: 'tab__episodes',
+		season: null
+	}),
+	computed: {
+		tabs() {
+			return {
+				episodes: {
+					title: 'Episodes',
+					to: 'tab__episodes',
+					icon: 'mdi-format-list-bulleted'
 				},
-				immediate: true
+				cast: {
+					title: 'Cast',
+					to: 'tab__cast',
+					icon: 'mdi-account-box-multiple',
+					disabled: this.season.credits.cast.length < 1
+				},
+				crew: {
+					title: 'Crew',
+					to: 'tab__crew',
+					icon: 'mdi-account-group',
+					disabled: this.season.credits.crew.length < 1
+				},
+				videos: {
+					title: 'Videos',
+					to: 'tab__videos',
+					icon: 'mdi-filmstrip-box-multiple',
+					disabled: this.season.videos.total_results < 1
+				}
 			}
 		}
-	};
+	},
+	watch: {
+		seasonNum: {
+			async handler(seasonNum) {
+				try {
+					if (seasonNum !== null) {
+						this.$emit('changeLoadingState', true)
+						this.season = await this.$api.tmdb.get(
+							`tv/${this.$store.state.series.id}/season/${seasonNum}`,
+							{
+								params: {
+									append_to_response: [
+										'credits',
+										'external_ids',
+										'videos'
+									].join()
+								}
+							}
+						)
+						this.$emit('changeLoadingState', 'success')
+						this.$emit('changeWindow', 'season')
+						this.$utils.scrollTo('#season-page', 10)
+					} else {
+						this.$emit('changeWindow', 'index')
+						this.season = null
+					}
+				} catch (e) {
+					this.$emit('changeLoadingState', 'error')
+				} finally {
+					setTimeout((_) => this.$emit('changeLoadingState', false), 1000)
+				}
+			},
+			immediate: true
+		}
+	}
+}
 </script>

@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-content.pt-0
+	v-main.pt-0
 		v-img(
 			:aspect-ratio='10'
 			:src='$store.getters.imgURL(collection.backdrop_path, "backdrop", 2)'
@@ -32,29 +32,29 @@
 </template>
 
 <script>
-	import MediaIterator from "~/components/shared/iterators/MediaIterator";
-	export default {
-		components: {
-			MediaIterator
-		},
-		validate: ({ params }) =>
-			/^\d+$/.test(String(params.collectionID).split("-")[0]),
-		fetch: async ({ store }) => {
-			await store.dispatch("FETCH_CONFIGS");
-			await store.dispatch("FETCH_GENRES");
-		},
-		asyncData: ({ app, params, error }) =>
-			app.$api.tmdb
-				.get(`collection/${String(params.collectionID).split("-")[0]}`)
-				.then(res => ({ collection: res }))
-				.catch(e => error(e)),
-		head() {
-			return {
-				title: this.collection.name
-			};
-		},
-		mounted() {
-			this.$store.commit("COLLAPSE_APP_BAR", true);
+import MediaIterator from '~/components/shared/iterators/MediaIterator'
+export default {
+	components: {
+		MediaIterator
+	},
+	validate: ({ params }) =>
+		/^\d+$/.test(String(params.collectionID).split('-')[0]),
+	fetch: async ({ store }) => {
+		await store.dispatch('FETCH_CONFIGS')
+		await store.dispatch('FETCH_GENRES')
+	},
+	asyncData: ({ app, params, error }) =>
+		app.$api.tmdb
+			.get(`collection/${String(params.collectionID).split('-')[0]}`)
+			.then((res) => ({ collection: res }))
+			.catch((e) => error(e)),
+	mounted() {
+		this.$store.commit('COLLAPSE_APP_BAR', true)
+	},
+	head() {
+		return {
+			title: this.collection.name
 		}
-	};
+	}
+}
 </script>
