@@ -1,52 +1,56 @@
 require('dotenv').config()
 
 export default {
-	head: {
-		titleTemplate: '%s | POPCORNEE',
-		title: '',
-		meta: [
-			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-			{
-				hid: 'description',
-				name: 'description',
-				content: process.env.npm_package_description || ''
-			}
-		],
-		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
-	},
+  target: 'static',
 
-	loading: '~/components/layout/Progress.vue',
+  head: {
+    titleTemplate: '%s | POPCORNEE',
+    title: '',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || '',
+      },
+    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+  },
 
-	// css: [],
+  components: true,
 
-	plugins: ['~plugins/api', '~plugins/utils', '~plugins/vue-masonry-css'],
+  loading: '~/components/layout/Progress.vue',
 
-	buildModules: [
-		'@nuxtjs/eslint-module',
-		'@nuxtjs/stylelint-module',
-		'@nuxtjs/dotenv',
-		'nuxt-webfontloader',
-		'@nuxtjs/vuetify'
-	],
+  css: ['~/assets/styles/overrides.scss'],
 
-	modules: [],
+  plugins: ['~plugins/api', '~plugins/utils', '~plugins/vue-masonry-css'],
 
-	webfontloader: {
-		google: {
-			families: ['Dosis:200,300,400,700,800']
-		}
-	},
+  buildModules: [
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/stylelint-module',
+    '@nuxtjs/dotenv',
+    'nuxt-webfontloader',
+    '@nuxtjs/vuetify',
+  ],
 
-	vuetify: {
-		treeShake: true,
-		customVariables: ['~/assets/vuetify/vars.scss'],
-		defaultAssets: {
-			font: {
-				family: 'Dosis'
-			},
-			icons: 'mdi'
-		},
-		optionsPath: './vuetify.options.js'
-	}
+  modules: [],
+
+  webfontloader: {
+    google: {
+      families: ['Dosis:200,300,400,700,800'],
+    },
+  },
+
+  vuetify: {
+    treeShake: true,
+    customVariables: ['~/assets/styles/vuetify-vars.scss'],
+    defaultAssets: {
+      font: {
+        family: 'Dosis',
+      },
+      icons: 'mdi',
+    },
+    optionsPath: './vuetify.options.js',
+  },
 }

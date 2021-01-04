@@ -62,32 +62,32 @@
 <script>
 import SeasonPage from '~/components/series/SeasonPage'
 export default {
-	components: {
-		SeasonPage
-	},
-	props: {
-		seasons: {
-			type: Array,
-			default: () => []
-		}
-	},
-	data: (_) => ({
-		window: 'index',
-		toggles: [],
-		showList: true,
-		loading: false
-	}),
-	computed: {
-		selected: {
-			get: ({ $route }) =>
-				$route.query && $route.query.season ? $route.query.season : null,
-			set(num) {
-				this.$router.replace({ hash: '#tab__seasons', query: { season: num } })
-			}
-		}
-	},
-	mounted() {
-		if (this.seasons.length === 1) this.selected = 1
-	}
+  components: {
+    SeasonPage,
+  },
+  props: {
+    seasons: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data: (_) => ({
+    window: 'index',
+    toggles: [],
+    showList: true,
+    loading: false,
+  }),
+  computed: {
+    selected: {
+      get: ({ $route }) =>
+        $route.query && $route.query.season ? $route.query.season : null,
+      set(num) {
+        this.$router.replace({ hash: '#tab__seasons', query: { season: num } })
+      },
+    },
+  },
+  mounted() {
+    if (this.seasons.length === 1) this.selected = 1
+  },
 }
 </script>

@@ -15,7 +15,7 @@
 								template(v-slot:placeholder)
 									v-row.pa-3.ma-0.fill-height(justify='start' align='start')
 										v-progress-circular(indeterminate)
-								v-overlay(:value='hover && view == "narrow"' absolute opacity='0.92' :color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"' :light='$vuetify.theme.light' :dark='$vuetify.theme.dark')
+								v-overlay(:value='hover && view == "narrow"' absolute opacity='.95' :color='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"' :light='$vuetify.theme.light' :dark='$vuetify.theme.dark')
 									v-container(fluid)
 										v-row(dense justify='center')
 											v-col.flex-grow-0.flex-shrink-0(justify-self='space-around' v-for='(id, index) in media.genre_ids' :key='index')
@@ -42,25 +42,12 @@
 
 <script>
 export default {
-	props: {
-		media: { type: Object, default: undefined },
-		view: { type: String, default: 'narrow' },
-		dense: { type: Boolean, default: false },
-		selected: { type: Boolean, default: false },
-		disabled: { type: Boolean, default: false }
-	}
+  props: {
+    media: { type: Object, default: undefined },
+    view: { type: String, default: 'narrow' },
+    dense: { type: Boolean, default: false },
+    selected: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
+  },
 }
 </script>
-
-<style lang="scss">
-.media-card {
-	p.media-card--overview {
-		display: -webkit-box;
-		overflow-wrap: break-word;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
-	}
-}
-</style>

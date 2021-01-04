@@ -28,14 +28,14 @@
 
 <script>
 export default {
-	props: {
-		cast: { type: Array, default: () => [] }
-	},
-	data() {
-		return {
-			search: '',
-			keys: ['name', 'character']
-		}
-	}
+  props: {
+    cast: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      search: '',
+      keys: ['name', 'character'],
+    }
+  },
 }
 </script>

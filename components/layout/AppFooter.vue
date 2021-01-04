@@ -1,3 +1,3 @@
 <template lang="pug">
-  nuxt
+  v-footer(app inset absolute)
 </template>

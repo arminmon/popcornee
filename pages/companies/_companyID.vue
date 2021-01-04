@@ -55,46 +55,46 @@
 
 <script>
 export default {
-	validate: ({ params }) =>
-		/^\d+$/.test(String(params.companyID).split('-')[0]),
-	fetch: async ({ store }) => {
-		await store.dispatch('FETCH_CONFIGS')
-	},
-	asyncData: ({ app, params, error }) =>
-		app.$api.tmdb
-			.get(`company/${String(params.companyID).split('-')[0]}`, {
-				params: { append_to_response: 'images' }
-			})
-			.then((res) => ({ company: res }))
-			.catch((e) => error(e)),
-	data: (_) => ({
-		tab: null
-	}),
-	computed: {
-		tabs() {
-			return [
-				{
-					title: 'Info',
-					to: '#tab__info',
-					icon: 'mdi-information-variant'
-				},
-				{
-					title: 'Images',
-					to: '#tab__images',
-					icon: 'mdi-image-multiple',
-					disabled: this.company.images.logos.length < 1
-				}
-			]
-		}
-	},
-	mounted() {
-		this.$store.commit('COLLAPSE_APP_BAR', true)
-		if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
-	},
-	head() {
-		return {
-			title: this.company.name
-		}
-	}
+  validate: ({ params }) =>
+    /^\d+$/.test(String(params.companyID).split('-')[0]),
+  asyncData: ({ app, params, error }) =>
+    app.$api.tmdb
+      .get(`company/${String(params.companyID).split('-')[0]}`, {
+        params: { append_to_response: 'images' },
+      })
+      .then((res) => ({ company: res }))
+      .catch((e) => error(e)),
+  data: (_) => ({
+    tab: null,
+  }),
+  fetch: async ({ store }) => {
+    await store.dispatch('FETCH_CONFIGS')
+  },
+  head() {
+    return {
+      title: this.company.name,
+    }
+  },
+  computed: {
+    tabs() {
+      return [
+        {
+          title: 'Info',
+          to: '#tab__info',
+          icon: 'mdi-information-variant',
+        },
+        {
+          title: 'Images',
+          to: '#tab__images',
+          icon: 'mdi-image-multiple',
+          disabled: this.company.images.logos.length < 1,
+        },
+      ]
+    },
+  },
+  mounted() {
+    this.$store.commit('COLLAPSE_APP_BAR', true)
+    if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
+  },
 }
 </script>

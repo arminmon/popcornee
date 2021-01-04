@@ -14,8 +14,8 @@
 
 <script>
 export default {
-	props: {
-		reviews: { type: Object, default: undefined }
-	}
+  props: {
+    reviews: { type: Object, default: undefined },
+  },
 }
 </script>

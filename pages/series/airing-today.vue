@@ -5,25 +5,21 @@ v-main
 </template>
 
 <script>
-import MediaIterator from '~/components/shared/iterators/MediaIterator'
 export default {
-	components: {
-		MediaIterator
-	},
-	fetch: async ({ store }) => {
-		await store.dispatch('FETCH_CONFIGS')
-		await store.dispatch('FETCH_GENRES')
-	},
-	asyncData: ({ app, error }) =>
-		app.$api.tmdb
-			.get('tv/airing_today')
-			.then((res) => ({ series: res }))
-			.catch((e) => error(e)),
-	mounted() {
-		this.$store.commit('COLLAPSE_APP_BAR', false)
-	},
-	head: {
-		title: 'Airing Today'
-	}
+  asyncData: ({ app, error }) =>
+    app.$api.tmdb
+      .get('tv/airing_today')
+      .then((res) => ({ series: res }))
+      .catch((e) => error(e)),
+  fetch: async ({ store }) => {
+    await store.dispatch('FETCH_CONFIGS')
+    await store.dispatch('FETCH_GENRES')
+  },
+  head: {
+    title: 'Airing Today',
+  },
+  mounted() {
+    this.$store.commit('COLLAPSE_APP_BAR', false)
+  },
 }
 </script>

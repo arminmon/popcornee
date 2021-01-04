@@ -22,36 +22,36 @@
 
 <script>
 export default {
-	props: {
-		crew: { type: Array, default: () => [] }
-	},
-	data() {
-		return {
-			search: '',
-			headers: [
-				{
-					text: '',
-					value: 'avatar',
-					align: 'right',
-					sortable: false
-				},
-				{
-					text: 'Name',
-					value: 'name',
-					sortable: true
-				},
-				{
-					text: 'Job',
-					value: 'job',
-					sortable: true
-				},
-				{
-					text: 'Department',
-					value: 'department',
-					sortable: true
-				}
-			]
-		}
-	}
+  props: {
+    crew: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      search: '',
+      headers: [
+        {
+          text: '',
+          value: 'avatar',
+          align: 'right',
+          sortable: false,
+        },
+        {
+          text: 'Name',
+          value: 'name',
+          sortable: true,
+        },
+        {
+          text: 'Job',
+          value: 'job',
+          sortable: true,
+        },
+        {
+          text: 'Department',
+          value: 'department',
+          sortable: true,
+        },
+      ],
+    }
+  },
 }
 </script>

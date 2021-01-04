@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import VideoCard from '~/components/shared/cards/VideoCard'
+import VideoCard from '~/components/common/cards/VideoCard'
 export default {
-	components: {
-		VideoCard
-	},
-	props: {
-		videos: { type: Object, default: undefined }
-	}
+  components: {
+    VideoCard,
+  },
+  props: {
+    videos: { type: Object, default: undefined },
+  },
 }
 </script>

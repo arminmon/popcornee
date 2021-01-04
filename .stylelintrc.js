@@ -1,8 +1,11 @@
 module.exports = {
-	extends: ['stylelint-config-prettier'],
-
-	rules: {
-		'max-empty-lines': 2,
-		indentation: 'tab'
-	}
+  plugins: ['stylelint-scss'],
+  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  // add your custom config here
+  // https://stylelint.io/user-guide/configuration
+  rules: {
+    'at-rule-no-unknown': null,
+    'scss/at-rule-no-unknown': true,
+    'no-descending-specificity': null,
+  },
 }

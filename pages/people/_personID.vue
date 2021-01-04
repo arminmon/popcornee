@@ -141,76 +141,72 @@
 </template>
 
 <script>
-import MediaCard from '~/components/shared/cards/MediaCard'
 export default {
-	components: {
-		MediaCard
-	},
-	validate({ params }) {
-		return /^\d+$/.test(String(params.personID).split('-')[0])
-	},
-	fetch: async ({ store }) => {
-		await store.dispatch('FETCH_CONFIGS')
-		await store.dispatch('FETCH_GENRES')
-	},
-	asyncData: ({ app, params, error }) =>
-		app.$api.tmdb
-			.get(`person/${String(params.personID).split('-')[0]}`, {
-				params: {
-					append_to_response: [
-						'movie_credits',
-						'tv_credits',
-						'external_ids',
-						'images'
-					].join()
-				}
-			})
-			.then((res) => ({ person: res }))
-			.catch((e) => error(e)),
-	data: (_) => ({
-		tab: null
-	}),
-	computed: {
-		tabs() {
-			return {
-				info: {
-					title: 'Info',
-					to: '#tab__info',
-					icon: 'mdi-information-variant'
-				},
-				movies: {
-					title: 'Movies',
-					to: '#tab__movies',
-					icon: 'mdi-movie-open',
-					disabled:
-						this.person.movie_credits.cast.length < 1 &&
-						this.person.movie_credits.crew.length < 1
-				},
-				series: {
-					title: 'Series',
-					to: '#tab__series',
-					icon: 'mdi-television-classic',
-					disabled:
-						this.person.tv_credits.cast.length < 1 &&
-						this.person.tv_credits.crew.length < 1
-				},
-				images: {
-					title: 'Images',
-					to: '#tab__images',
-					icon: 'mdi-image-multiple',
-					disabled: this.person.images.profiles.length < 1
-				}
-			}
-		}
-	},
-	mounted() {
-		this.$store.commit('COLLAPSE_APP_BAR', true)
-		if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
-	},
-	head() {
-		return {
-			title: this.person.name
-		}
-	}
+  validate({ params }) {
+    return /^\d+$/.test(String(params.personID).split('-')[0])
+  },
+  asyncData: ({ app, params, error }) =>
+    app.$api.tmdb
+      .get(`person/${String(params.personID).split('-')[0]}`, {
+        params: {
+          append_to_response: [
+            'movie_credits',
+            'tv_credits',
+            'external_ids',
+            'images',
+          ].join(),
+        },
+      })
+      .then((res) => ({ person: res }))
+      .catch((e) => error(e)),
+  data: (_) => ({
+    tab: null,
+  }),
+  fetch: async ({ store }) => {
+    await store.dispatch('FETCH_CONFIGS')
+    await store.dispatch('FETCH_GENRES')
+  },
+  head() {
+    return {
+      title: this.person.name,
+    }
+  },
+  computed: {
+    tabs() {
+      return {
+        info: {
+          title: 'Info',
+          to: '#tab__info',
+          icon: 'mdi-information-variant',
+        },
+        movies: {
+          title: 'Movies',
+          to: '#tab__movies',
+          icon: 'mdi-movie-open',
+          disabled:
+            this.person.movie_credits.cast.length < 1 &&
+            this.person.movie_credits.crew.length < 1,
+        },
+        series: {
+          title: 'Series',
+          to: '#tab__series',
+          icon: 'mdi-television-classic',
+          disabled:
+            this.person.tv_credits.cast.length < 1 &&
+            this.person.tv_credits.crew.length < 1,
+        },
+        images: {
+          title: 'Images',
+          to: '#tab__images',
+          icon: 'mdi-image-multiple',
+          disabled: this.person.images.profiles.length < 1,
+        },
+      }
+    },
+  },
+  mounted() {
+    this.$store.commit('COLLAPSE_APP_BAR', true)
+    if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
+  },
 }
 </script>

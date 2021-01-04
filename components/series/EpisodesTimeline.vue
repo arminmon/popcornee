@@ -53,23 +53,23 @@
 
 <script>
 export default {
-	props: {
-		episodes: {
-			type: Array,
-			default: () => []
-		}
-	},
-	data: (_) => ({
-		toggles: [],
-		dialog: false
-	}),
-	computed: {
-		guestStarsAvailable() {
-			return this.episodes.some((episode) => episode.guest_stars.length > 0)
-		},
-		stillImageAvailable() {
-			return this.episodes.some((episode) => episode.still_path != null)
-		}
-	}
+  props: {
+    episodes: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data: (_) => ({
+    toggles: [],
+    dialog: false,
+  }),
+  computed: {
+    guestStarsAvailable() {
+      return this.episodes.some((episode) => episode.guest_stars.length > 0)
+    },
+    stillImageAvailable() {
+      return this.episodes.some((episode) => episode.still_path != null)
+    },
+  },
 }
 </script>

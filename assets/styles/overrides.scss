@@ -1,0 +1,41 @@
+.v-navigation-drawer,
+.v-bottom-navigation,
+.v-app-bar {
+  backdrop-filter: blur(7px);
+}
+
+.v-overlay--active {
+  backdrop-filter: blur(5px);
+}
+
+.v-img--blurred {
+  > .v-image__image {
+    filter: blur(7px);
+    transform: scale(1.2);
+  }
+}
+
+.info-table {
+  tbody {
+    > tr {
+      td {
+        &:first-child {
+          min-width: 100px;
+          max-width: 25%;
+          width: 25%;
+        }
+      }
+    }
+  }
+}
+
+.media-card {
+  p.media-card--overview {
+    display: -webkit-box;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}

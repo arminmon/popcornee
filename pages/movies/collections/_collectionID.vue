@@ -32,29 +32,25 @@
 </template>
 
 <script>
-import MediaIterator from '~/components/shared/iterators/MediaIterator'
 export default {
-	components: {
-		MediaIterator
-	},
-	validate: ({ params }) =>
-		/^\d+$/.test(String(params.collectionID).split('-')[0]),
-	fetch: async ({ store }) => {
-		await store.dispatch('FETCH_CONFIGS')
-		await store.dispatch('FETCH_GENRES')
-	},
-	asyncData: ({ app, params, error }) =>
-		app.$api.tmdb
-			.get(`collection/${String(params.collectionID).split('-')[0]}`)
-			.then((res) => ({ collection: res }))
-			.catch((e) => error(e)),
-	mounted() {
-		this.$store.commit('COLLAPSE_APP_BAR', true)
-	},
-	head() {
-		return {
-			title: this.collection.name
-		}
-	}
+  validate: ({ params }) =>
+    /^\d+$/.test(String(params.collectionID).split('-')[0]),
+  asyncData: ({ app, params, error }) =>
+    app.$api.tmdb
+      .get(`collection/${String(params.collectionID).split('-')[0]}`)
+      .then((res) => ({ collection: res }))
+      .catch((e) => error(e)),
+  fetch: async ({ store }) => {
+    await store.dispatch('FETCH_CONFIGS')
+    await store.dispatch('FETCH_GENRES')
+  },
+  head() {
+    return {
+      title: this.collection.name,
+    }
+  },
+  mounted() {
+    this.$store.commit('COLLAPSE_APP_BAR', true)
+  },
 }
 </script>

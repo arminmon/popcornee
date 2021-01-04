@@ -176,118 +176,104 @@
 </template>
 
 <script>
-import MediaIterator from '~/components/shared/iterators/MediaIterator'
-import SeasonBrowser from '~/components/series/SeasonBrowser'
-import CastIterator from '~/components/shared/iterators/CastIterator'
-import CrewTable from '~/components/shared/iterators/CrewTable'
-import VideosGrid from '~/components/shared/iterators/VideosGrid'
-import ReviewsTimeline from '~/components/shared/iterators/ReviewsTimeline'
 export default {
-	components: {
-		MediaIterator,
-		SeasonBrowser,
-		CastIterator,
-		CrewTable,
-		VideosGrid,
-		ReviewsTimeline
-	},
-	validate: ({ params }) => /^\d+$/.test(String(params.seriesID).split('-')[0]),
-	fetch: async ({ store }) => {
-		await store.dispatch('FETCH_CONFIGS')
-		await store.dispatch('FETCH_GENRES')
-	},
-	asyncData: ({ app, params, store, error }) =>
-		app.$api.tmdb
-			.get(`tv/${String(params.seriesID).split('-')[0]}`, {
-				params: {
-					append_to_response: [
-						'credits',
-						'keywords',
-						'external_ids',
-						'videos',
-						'recommendations',
-						'similar',
-						'reviews',
-						'content_ratings'
-					].join()
-				}
-			})
-			.then((res) => {
-				store.commit('series/SET_ID', res.id)
-				store.commit('series/SET_NAME', res.name)
-				return { series: res }
-			})
-			.catch((e) => error(e)),
-	data: (_) => ({
-		tab: null,
-		seasonsSortDesc: true
-	}),
-	computed: {
-		tabs() {
-			return {
-				info: {
-					title: 'Info',
-					to: '#tab__info',
-					icon: 'mdi-information-variant'
-				},
-				seasons: {
-					title: 'Seasons',
-					to: '#tab__seasons',
-					icon: 'mdi-cards-variant'
-				},
-				cast: {
-					title: 'Cast',
-					to: '#tab__cast',
-					icon: 'mdi-account-box-multiple',
-					disabled: this.series.credits.cast.length < 1
-				},
-				crew: {
-					title: 'Crew',
-					to: '#tab__crew',
-					icon: 'mdi-account-group',
-					disabled: this.series.credits.crew.length < 1
-				},
-				videos: {
-					title: 'Videos',
-					to: '#tab__videos',
-					icon: 'mdi-filmstrip-box-multiple',
-					disabled: this.series.videos.total_results < 1
-				},
-				reviews: {
-					title: 'Reviews',
-					to: '#tab__reviews',
-					icon: 'mdi-android-messages',
-					disabled: this.series.reviews.total_results < 1
-				},
-				similar: {
-					title: 'Similar',
-					to: '#tab__similar',
-					icon: 'mdi-approximately-equal-box',
-					disabled: this.series.similar.total_results < 1
-				}
-			}
-		},
-		visibleCast: ({ $vuetify }) =>
-			$vuetify.breakpoint.mdAndDown
-				? 4 - 1
-				: $vuetify.breakpoint.lgOnly
-				? 6 - 1
-				: 12 - 1
-	},
-	mounted() {
-		this.$store.commit('COLLAPSE_APP_BAR', true)
-		if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
-	},
-	head() {
-		return {
-			title: `${this.series.name || this.series.original_name} (${
-				this.series.first_air_date
-					? new Date(this.series.first_air_date).toLocaleDateString('en-US', {
-							year: 'numeric'
-					  })
-					: 'n/a'
-			})${this.series.tagline ? ' – ' + this.series.tagline : ''}`
-		}
-	}
+  validate: ({ params }) => /^\d+$/.test(String(params.seriesID).split('-')[0]),
+  asyncData: ({ app, params, store, error }) =>
+    app.$api.tmdb
+      .get(`tv/${String(params.seriesID).split('-')[0]}`, {
+        params: {
+          append_to_response: [
+            'credits',
+            'keywords',
+            'external_ids',
+            'videos',
+            'recommendations',
+            'similar',
+            'reviews',
+            'content_ratings',
+          ].join(),
+        },
+      })
+      .then((res) => {
+        store.commit('series/SET_ID', res.id)
+        store.commit('series/SET_NAME', res.name)
+        return { series: res }
+      })
+      .catch((e) => error(e)),
+  data: (_) => ({
+    tab: null,
+    seasonsSortDesc: true,
+  }),
+  fetch: async ({ store }) => {
+    await store.dispatch('FETCH_CONFIGS')
+    await store.dispatch('FETCH_GENRES')
+  },
+  head() {
+    return {
+      title: `${this.series.name || this.series.original_name} (${
+        this.series.first_air_date
+          ? new Date(this.series.first_air_date).toLocaleDateString('en-US', {
+              year: 'numeric',
+            })
+          : 'n/a'
+      })${this.series.tagline ? ' – ' + this.series.tagline : ''}`,
+    }
+  },
+  computed: {
+    tabs() {
+      return {
+        info: {
+          title: 'Info',
+          to: '#tab__info',
+          icon: 'mdi-information-variant',
+        },
+        seasons: {
+          title: 'Seasons',
+          to: '#tab__seasons',
+          icon: 'mdi-cards-variant',
+        },
+        cast: {
+          title: 'Cast',
+          to: '#tab__cast',
+          icon: 'mdi-account-box-multiple',
+          disabled: this.series.credits.cast.length < 1,
+        },
+        crew: {
+          title: 'Crew',
+          to: '#tab__crew',
+          icon: 'mdi-account-group',
+          disabled: this.series.credits.crew.length < 1,
+        },
+        videos: {
+          title: 'Videos',
+          to: '#tab__videos',
+          icon: 'mdi-filmstrip-box-multiple',
+          disabled: this.series.videos.total_results < 1,
+        },
+        reviews: {
+          title: 'Reviews',
+          to: '#tab__reviews',
+          icon: 'mdi-android-messages',
+          disabled: this.series.reviews.total_results < 1,
+        },
+        similar: {
+          title: 'Similar',
+          to: '#tab__similar',
+          icon: 'mdi-approximately-equal-box',
+          disabled: this.series.similar.total_results < 1,
+        },
+      }
+    },
+    visibleCast: ({ $vuetify }) =>
+      $vuetify.breakpoint.mdAndDown
+        ? 4 - 1
+        : $vuetify.breakpoint.lgOnly
+        ? 6 - 1
+        : 12 - 1,
+  },
+  mounted() {
+    this.$store.commit('COLLAPSE_APP_BAR', true)
+    if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
+  },
 }
 </script>

@@ -12,12 +12,12 @@
 
 <script>
 export default {
-	mounted() {
-		this.$store.commit('SET_DRAWER', false)
-		this.$store.commit('COLLAPSE_APP_BAR', false)
-	},
-	head: {
-		title: 'Discover'
-	}
+  head: {
+    title: 'Discover',
+  },
+  mounted() {
+    this.$store.commit('SET_DRAWER', false)
+    this.$store.commit('COLLAPSE_APP_BAR', false)
+  },
 }
 </script>
