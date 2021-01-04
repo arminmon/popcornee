@@ -178,9 +178,9 @@
 <script>
 export default {
   validate: ({ params }) => /^\d+$/.test(String(params.seriesID).split('-')[0]),
-  asyncData: ({ app, params, store, error }) =>
-    app.$api.tmdb
-      .get(`tv/${String(params.seriesID).split('-')[0]}`, {
+  asyncData: ({ $axios, params, store }) =>
+    $axios
+      .$get(`tv/${String(params.seriesID).split('-')[0]}`, {
         params: {
           append_to_response: [
             'credits',
@@ -198,8 +198,7 @@ export default {
         store.commit('series/SET_ID', res.id)
         store.commit('series/SET_NAME', res.name)
         return { series: res }
-      })
-      .catch((e) => error(e)),
+      }),
   data: (_) => ({
     tab: null,
     seasonsSortDesc: true,

@@ -57,13 +57,12 @@
 export default {
   validate: ({ params }) =>
     /^\d+$/.test(String(params.companyID).split('-')[0]),
-  asyncData: ({ app, params, error }) =>
-    app.$api.tmdb
-      .get(`company/${String(params.companyID).split('-')[0]}`, {
+  asyncData: ({ $axios, params }) =>
+    $axios
+      .$get(`company/${String(params.companyID).split('-')[0]}`, {
         params: { append_to_response: 'images' },
       })
-      .then((res) => ({ company: res }))
-      .catch((e) => error(e)),
+      .then((res) => ({ company: res })),
   data: (_) => ({
     tab: null,
   }),

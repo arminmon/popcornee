@@ -35,11 +35,10 @@
 export default {
   validate: ({ params }) =>
     /^\d+$/.test(String(params.collectionID).split('-')[0]),
-  asyncData: ({ app, params, error }) =>
-    app.$api.tmdb
-      .get(`collection/${String(params.collectionID).split('-')[0]}`)
-      .then((res) => ({ collection: res }))
-      .catch((e) => error(e)),
+  asyncData: ({ $axios, params }) =>
+    $axios
+      .$get(`collection/${String(params.collectionID).split('-')[0]}`)
+      .then((res) => ({ collection: res })),
   fetch: async ({ store }) => {
     await store.dispatch('FETCH_CONFIGS')
     await store.dispatch('FETCH_GENRES')

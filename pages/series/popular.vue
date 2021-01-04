@@ -6,11 +6,8 @@ v-main
 
 <script>
 export default {
-  asyncData: ({ app, error }) =>
-    app.$api.tmdb
-      .get('tv/popular')
-      .then((res) => ({ series: res }))
-      .catch((e) => error(e)),
+  asyncData: ({ $axios }) =>
+    $axios.$get('tv/popular').then((res) => ({ series: res })),
   fetch: async ({ store }) => {
     await store.dispatch('FETCH_CONFIGS')
     await store.dispatch('FETCH_GENRES')

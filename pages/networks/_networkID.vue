@@ -56,13 +56,12 @@
 export default {
   validate: ({ params }) =>
     /^\d+$/.test(String(params.networkID).split('-')[0]),
-  asyncData: ({ app, params, error }) =>
-    app.$api.tmdb
-      .get(`network/${String(params.networkID).split('-')[0]}`, {
+  asyncData: ({ $axios, params }) =>
+    $axios
+      .$get(`network/${String(params.networkID).split('-')[0]}`, {
         params: { append_to_response: 'images' },
       })
-      .then((res) => ({ network: res }))
-      .catch((e) => error(e)),
+      .then((res) => ({ network: res })),
   data: (_) => ({
     tab: null,
   }),

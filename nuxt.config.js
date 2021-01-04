@@ -24,17 +24,32 @@ export default {
 
   css: ['~/assets/styles/overrides.scss'],
 
-  plugins: ['~plugins/api', '~plugins/utils', '~plugins/vue-masonry-css'],
+  modules: ['@nuxtjs/axios'],
+
+  publicRuntimeConfig: {
+    apiKey: process.env.TMDB_API_KEY,
+    axios: {
+      browserBaseURL: process.env.TMDB_API_URL,
+    },
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.TMDB_API_URL,
+    },
+  },
+
+  axios: {
+    progress: true,
+    debug: false,
+  },
 
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/dotenv',
     'nuxt-webfontloader',
     '@nuxtjs/vuetify',
   ],
-
-  modules: [],
 
   webfontloader: {
     google: {
@@ -53,4 +68,6 @@ export default {
     },
     optionsPath: './vuetify.options.js',
   },
+
+  plugins: ['~plugins/axios', '~plugins/utils', '~plugins/vue-masonry-css'],
 }

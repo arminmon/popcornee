@@ -56,43 +56,38 @@ export const getters = {
 
 /* ACTIONS (prepare stuff for store) */
 export const actions = {
-  async FETCH_CONFIGS({ commit, state, error }) {
+  async FETCH_CONFIGS({ commit, state }) {
     if (state.configs == null)
-      await this.$api.tmdb
-        .get('configuration')
+      await this.$axios
+        .$get('configuration')
         .then((res) => commit('SET_CONFIGS', res))
-        .catch((e) => error(e))
   },
-  async FETCH_GENRES({ commit, state, error }) {
+  async FETCH_GENRES({ commit, state }) {
     if (state.genres.movies.length === 0)
-      await this.$api.tmdb
-        .get('genre/movie/list')
+      await this.$axios
+        .$get('genre/movie/list')
         .then((res) =>
           commit('SET_GENRES', { type: 'movies', list: res.genres })
         )
-        .catch((e) => error(e))
     if (state.genres.series.length === 0)
-      await this.$api.tmdb
-        .get('genre/tv/list')
+      await this.$axios
+        .$get('genre/tv/list')
         .then((res) =>
           commit('SET_GENRES', { type: 'series', list: res.genres })
         )
-        .catch((e) => error(e))
   },
-  async FETCH_CERTS({ commit, state, error }) {
+  async FETCH_CERTS({ commit, state }) {
     if (state.certifications.movies == null)
-      await this.$api.tmdb
-        .get('certification/movie/list')
+      await this.$axios
+        .$get('certification/movie/list')
         .then((res) =>
           commit('SET_CERTS', { type: 'movies', list: res.certifications })
         )
-        .catch((e) => error(e))
     if (state.certifications.series == null)
-      await this.$api.tmdb
-        .get('certification/tv/list')
+      await this.$axios
+        .$get('certification/tv/list')
         .then((res) =>
           commit('SET_CERTS', { type: 'series', list: res.certifications })
         )
-        .catch((e) => error(e))
   },
 }

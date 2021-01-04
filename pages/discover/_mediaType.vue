@@ -127,9 +127,9 @@ export default {
         return redirect('/discover')
     }
   },
-  asyncData: ({ app, params, query, store, error }) =>
-    app.$api.tmdb
-      .get(`discover/${params.mediaType === 'movies' ? 'movie' : 'tv'}`, {
+  asyncData: ({ $axios, params, query, store }) =>
+    $axios
+      .$get(`discover/${params.mediaType === 'movies' ? 'movie' : 'tv'}`, {
         params: query,
       })
       .then(async (res) => {
@@ -153,7 +153,7 @@ export default {
         if (query.with_keywords) {
           let keyword = null
           for (const keywordID of String(query.with_keywords).split(',')) {
-            keyword = await app.$api.tmdb.get(`keyword/${keywordID}`)
+            keyword = await $axios.$get(`keyword/${keywordID}`)
             withKeywords.push(keyword)
           }
         }
@@ -173,8 +173,7 @@ export default {
             ? query.sort_by.split('.')[1] === 'desc'
             : true,
         }
-      })
-      .catch((e) => error(e)),
+      }),
   data: (_) => ({
     drawer: false,
     panels: [0, 1, 2],
@@ -242,7 +241,7 @@ export default {
       if (keyword)
         try {
           this.loadingKeywords = true
-          const res = await this.$api.tmdb.get('search/keyword', {
+          const res = await this.$axios.$get('search/keyword', {
             params: { query: keyword },
           })
           this.keywords = res.results

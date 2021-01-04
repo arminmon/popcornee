@@ -126,7 +126,7 @@
 										span(v-show='$vuetify.breakpoint.mdAndUp') Instagram
 				//- Collection
 				v-container(fluid v-if='movie.collection')
-					media-iterator(:media='movie.collection.parts' :title='movie.collection.name' justify='center' default-view='narrow' hide-views)
+					media-iterator(:media='{results: movie.collection.parts}' :title='movie.collection.name' justify='center' default-view='narrow' hide-views)
 						template(v-slot:header-append)
 							v-btn(text nuxt :to='`/movies/collections/${movie.collection.id}-${$utils.slugify(String(movie.collection.name))}`') {{$vuetify.breakpoint.mdAndUp ? "View Collection" : "View"}}
 				//- Recommendations
@@ -158,9 +158,9 @@
 <script>
 export default {
   validate: ({ params }) => /^\d+$/.test(String(params.movieID).split('-')[0]),
-  asyncData: ({ app, params, error }) =>
-    app.$api.tmdb
-      .get(`movie/${String(params.movieID).split('-')[0]}`, {
+  asyncData: ({ $axios, params }) =>
+    $axios
+      .$get(`movie/${String(params.movieID).split('-')[0]}`, {
         params: {
           append_to_response: [
             'credits',
@@ -181,14 +181,13 @@ export default {
           )
         res.collection = null
         if (res.belongs_to_collection) {
-          res.collection = await app.$api.tmdb.get(
+          res.collection = await $axios.$get(
             `collection/${res.belongs_to_collection.id}`
           )
           delete res.belongs_to_collection
         }
         return { movie: res }
-      })
-      .catch((e) => error(e)),
+      }),
   data: (_) => ({
     tab: null,
   }),

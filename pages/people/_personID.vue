@@ -145,9 +145,9 @@ export default {
   validate({ params }) {
     return /^\d+$/.test(String(params.personID).split('-')[0])
   },
-  asyncData: ({ app, params, error }) =>
-    app.$api.tmdb
-      .get(`person/${String(params.personID).split('-')[0]}`, {
+  asyncData: ({ $axios, params }) =>
+    $axios
+      .$get(`person/${String(params.personID).split('-')[0]}`, {
         params: {
           append_to_response: [
             'movie_credits',
@@ -157,8 +157,7 @@ export default {
           ].join(),
         },
       })
-      .then((res) => ({ person: res }))
-      .catch((e) => error(e)),
+      .then((res) => ({ person: res })),
   data: (_) => ({
     tab: null,
   }),
