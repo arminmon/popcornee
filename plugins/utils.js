@@ -13,11 +13,6 @@ export default function ({ $vuetify }, inject) {
           .join()}`
       : null
 
-  const scrollTo = (target, delay = 0) =>
-    process && process.server
-      ? null
-      : setTimeout((_) => $vuetify.goTo(target), delay)
-
   const media = {
     views: {
       narrow: {
@@ -43,5 +38,5 @@ export default function ({ $vuetify }, inject) {
       },
     },
   }
-  inject('utils', { gradient, scrollTo, media, slugify })
+  inject('utils', { gradient, media, slugify })
 }

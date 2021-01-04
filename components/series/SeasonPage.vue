@@ -110,7 +110,7 @@ export default {
             )
             this.$emit('changeLoadingState', 'success')
             this.$emit('changeWindow', 'season')
-            this.$utils.scrollTo('#season-page', 10)
+            this.$vuetify.goTo('#season-page')
           } else {
             this.$emit('changeWindow', 'index')
             this.season = null
