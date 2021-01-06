@@ -70,4 +70,9 @@ export default {
   },
 
   plugins: ['~plugins/axios', '~plugins/utils', '~plugins/vue-masonry-css'],
+
+  generate: {
+    crawler: false,
+    devtools: false,
+  },
 }
