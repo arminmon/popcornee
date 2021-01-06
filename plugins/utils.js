@@ -1,5 +1,3 @@
-import slugify from '@sindresorhus/slugify'
-
 export default function ({ $vuetify }, inject) {
   const gradient = (dir = '', stops = []) =>
     dir !== '' && stops.length > 0
@@ -38,5 +36,5 @@ export default function ({ $vuetify }, inject) {
       },
     },
   }
-  inject('utils', { gradient, media, slugify })
+  inject('utils', { gradient, media })
 }

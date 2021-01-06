@@ -10,7 +10,7 @@
     :left='!$vuetify.rtl'
     )
     v-app-bar-nav-icon(@click='toggleDrawer')
-    v-toolbar-title.font-weight-bold {{title}}
+    v-app-bar-title.font-weight-bold {{title}}
     v-progress-linear(absolute bottom height='3' :active='progress.active' :value='progress.value' :color='progress.color' :indeterminate='progress.active && progress.value == 0 && progress.color != "error"')
     v-spacer
     v-btn(icon @click='switchTheme')

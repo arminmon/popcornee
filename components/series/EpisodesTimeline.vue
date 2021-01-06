@@ -30,7 +30,7 @@
 								v-col(v-for='person in episode.guest_stars' :key='person.id' cols='4' sm='3' md='2' xl='1')
 									v-tooltip(top)
 										template(v-slot:activator='{ on, value }')
-											v-card.pa-2(flat v-on='on' nuxt :to='`/people/${person.id}-${$utils.slugify(String(person.name))}#tab__info`' :color='value ? $vuetify.theme.dark ? "grey darken-4" : "grey lighten-3" : "transparent"')
+											v-card.pa-2(flat v-on='on' nuxt :to='`/people/${person.id}`' :color='value ? $vuetify.theme.dark ? "grey darken-4" : "grey lighten-3" : "transparent"')
 												.d-flex
 													v-avatar.elevation-3(width='100%' height='auto')
 														v-img(v-if='person.profile_path' :src='$store.getters.imgURL(person.profile_path, "profile", 1)' aspect-ratio='1' :lazy-src='$store.getters.imgURL(person.profile_path, "profile", 0)')

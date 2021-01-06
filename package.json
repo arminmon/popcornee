@@ -27,7 +27,6 @@
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.12.4",
-		"@sindresorhus/slugify": "^1.1.0",
 		"nuxt": "^2.14.12",
 		"nuxt-logrocket": "^1.5.2",
 		"nuxt-webfontloader": "^1.1.0",

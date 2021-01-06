@@ -1,17 +1,22 @@
 import goTo from 'vuetify/es5/services/goto'
 
 export default (to, from, savedPosition) => {
-  let target = 0
-  let offset = 0
+  let position = null
 
-  if (to.hash) {
-    if (to.hash.startsWith('#tab__')) {
-      target = to.path === from.path && from.hash !== '' ? '#tabs' : 0
-      offset = to.path === from.path && from.hash !== '' ? 64 : 0
-    } else target = to.hash
-  }
+  const scrollTo = String(
+    to.matched[to.matched.length - 1].components.default.options.scrollTo
+  )
 
-  return new Promise((resolve) => {
-    goTo(target, { offset })
-  })
+  if (scrollTo && scrollTo.startsWith('#')) position = scrollTo
+
+  if (scrollTo === 'top') position = 0
+
+  if (savedPosition) position = savedPosition
+
+  if (to.hash) position = to.hash
+
+  if (position !== null)
+    return new Promise((resolve) => {
+      goTo(position)
+    })
 }

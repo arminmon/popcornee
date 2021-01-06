@@ -3,7 +3,7 @@
 		v-card.media-card(
 			flat
 			nuxt
-			:to='`/${media.first_air_date ? "series" : "movies"}/${media.id}-${$utils.slugify(String(media.title || media.original_title || media.name || media.original_name))}#tab__info`'
+			:to='`/${media.first_air_date ? "series" : "movies"}/${media.id}`'
 			:active-class='$vuetify.theme.dark ? "grey darken-4" : "grey lighten-3"'
 			:disabled='disabled'
 			:color='hover || selected ? $vuetify.theme.dark ? "grey darken-4" : "grey lighten-3" : "transparent"')

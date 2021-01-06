@@ -6,7 +6,7 @@
 					v-text-field(v-model='search' append-icon='mdi-account-search' label='Search Crew, Jobs & Departments' single-line hide-details clearable)
 					v-spacer
 			template(v-slot:item.avatar='{ item }')
-				nuxt-link(:to='`/people/${item.id}-${$utils.slugify(String(item.name))}#tab__info`')
+				nuxt-link.text-decoration-none(:to='`/people/${item.id}`')
 					v-avatar.elevation-2.my-4(:size='$vuetify.breakpoint.xsOnly ? 48 : 64' :tile='$vuetify.breakpoint.xsOnly')
 						v-img(v-if='item.profile_path' :src='$store.getters.imgURL(item.profile_path, "profile", 1)' :lazy-src='$store.getters.imgURL(item.profile_path, "profile", 0)')
 							template(v-slot:placeholder)

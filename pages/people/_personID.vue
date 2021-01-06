@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-main.pt-0
-		v-img(
+		v-img#hero(
 			:aspect-ratio='10'
 			src='/null.png'
 			:gradient='$utils.gradient("to top", [{ alpha: "1", pos: "15%" }, { alpha: ".7", pos: "100%" }])'
@@ -30,137 +30,66 @@
 							span.font-weight-bold {{new Date(person.deathday).toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"})}}
 							span.font-weight-light  (Deceased)
 						p(v-if='person.biography' v-html='person.biography')
-		v-sheet(tile elevation='0')
+		v-sheet#tabs(tile elevation='0')
 			v-container.py-0(:class='{ "px-0": $vuetify.breakpoint.xsOnly }')
-				v-tabs#tabs(v-model='tab' show-arrows grow center-active icons-and-text background-color="transparent")
+				v-tabs(show-arrows grow center-active icons-and-text background-color="transparent")
 					v-tabs-slider
-					v-tab(v-for='tab in tabs' :key='tab.to' nuxt replace :to='tab.to' v-if='!tab.disabled')
+					v-tab(v-for='tab in tabs' :key='tab.title' nuxt :to='tab.to' exact v-if='!tab.disabled')
 						span {{tab.title}}
 						v-icon {{tab.icon}}
-		v-tabs-items(v-model='tab')
-			//- Info Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab__info')
-				//- Info Table
-				v-container
-					v-simple-table.py-6.info-table
-						tbody
-							tr(v-if='person.known_for_department')
-								td.text-right.caption.font-weight-light Known for Department
-								td {{person.known_for_department}}
-							tr(v-if='person.birthday')
-								td.text-right.caption.font-weight-light Date of Birth
-								td {{new Date(person.birthday).toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"})}}
-							tr(v-if='person.place_of_birth')
-								td.text-right.caption.font-weight-light Place of Birth
-								td {{person.place_of_birth}}
-							tr(v-if='person.deathday')
-								td.text-right.caption.font-weight-light Date of Birth
-								td {{new Date(person.deathday).toLocaleDateString("en-US", {year: "numeric", month: "long", day: "numeric"})}}
-							tr(v-if='person.also_known_as.length > 0')
-								td.text-right.caption.font-weight-light Also Known as
-								td
-									.mx-n1
-										v-chip.ma-1(v-for='name in person.also_known_as' :key='name') {{name}}
-			//- Movies ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab__movies' v-if='!tabs.movies.disabled')
-				v-container(fluid)
-					v-data-iterator(:items='[person.movie_credits.cast, person.movie_credits.crew]' :options='{ tab: 0, view: "narrow" }' disable-pagination hide-default-footer)
-						template(v-slot:header='props')
-							v-toolbar(flat color='transparent')
-								v-btn-toggle(v-model='props.options.tab' borderless mandatory)
-									v-btn(v-if='props.items[0].length > 0') Cast
-									v-btn(v-if='props.items[1].length > 0') Crew
-								v-spacer
-								v-btn-toggle(v-model='props.options.view' borderless mandatory)
-									v-btn(v-for='(view, key) of $utils.media.views' :key='key' :value='key')
-										v-icon(:class='view.class') {{view.icon}}
-						template(v-slot:default='props')
-							v-tabs-items(v-model='props.options.tab')
-								v-tab-item(v-if='props.items[0].length > 0')
-									v-row(dense :no-gutters='$vuetify.breakpoint.smAndDown' justify='center')
-										v-col(v-for='item in props.items[0]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
-											media-card(:media='item' :view='props.options.view')
-												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.character')
-														span.font-weight-thin as
-														| {{item.character}}
-								v-tab-item(v-if='props.items[1].length > 0')
-									v-row(dense :no-gutters='$vuetify.breakpoint.smAndDown' justify='center')
-										v-col(v-for='item in props.items[1]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
-											media-card(:media='item' :view='props.options.view')
-												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.job')
-														span.font-weight-thin as
-														| {{item.job}}
-			//- Series ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab__series' v-if='!tabs.series.disabled')
-				v-container(fluid)
-					v-data-iterator(:items='[person.tv_credits.cast, person.tv_credits.crew]' :options='{ tab: 0, view: "narrow" }' disable-pagination hide-default-footer)
-						template(v-slot:header='props')
-							v-toolbar(flat color='transparent')
-								v-btn-toggle(v-model='props.options.tab' borderless mandatory)
-									v-btn(v-if='props.items[0].length > 0') Cast
-									v-btn(v-if='props.items[1].length > 0') Crew
-								v-spacer
-								v-btn-toggle(v-model='props.options.view' borderless mandatory)
-									v-btn(v-for='(view, key) of $utils.media.views' :key='key' :value='key')
-										v-icon(:class='view.class') {{view.icon}}
-						template(v-slot:default='props')
-							v-tabs-items(v-model='props.options.tab')
-								v-tab-item(v-if='props.items[0].length > 0')
-									v-row(dense :no-gutters='$vuetify.breakpoint.smAndDown' justify='center')
-										v-col(v-for='item in props.items[0]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
-											media-card(:media='item' :view='props.options.view')
-												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.character')
-														span.font-weight-thin as
-														| {{item.character}}
-								v-tab-item(v-if='props.items[1].length > 0')
-									v-row(dense :no-gutters='$vuetify.breakpoint.smAndDown' justify='center')
-										v-col(v-for='item in props.items[1]' :key='item.credit_id' v-bind='$utils.media.views[props.options.view].breakpoints')
-											media-card(:media='item' :view='props.options.view')
-												template(v-slot:details)
-													p.ma-0.overline.text-none(v-if='item.job')
-														span.font-weight-thin as
-														| {{item.job}}
-			//- Images ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab__images' v-if='!tabs.images.disabled')
-				v-container
-					v-row(dense justify='center')
-						v-col(v-for='image in person.images.profiles' :key='image.file_path' cols='6' sm='4' md='3' lg='2' xl='1')
-							v-hover(v-slot:default='{ hover }')
-								v-card(hover :href='`${$store.getters.imgURL(image.file_path,"profile",3)}`' target='_blank')
-									v-img(:src='$store.getters.imgURL(image.file_path, "profile", 1)' :lazy-src='$store.getters.imgURL(image.file_path, "profile", 0)' :aspect-ratio='2/3')
-										template(v-slot:placeholder)
-											v-row.pa-3.ma-0.fill-height(justify='center' align='center')
-												v-progress-circular(indeterminate)
-										v-row.pa-3.ma-0.fill-height(justify='center' align='center')
-											v-fab-transition
-												v-btn(v-show='hover' fab small)
-													v-icon mdi-download
+		nuxt-child(:key='$route.path' :person='person')
 </template>
 
 <script>
 export default {
+  scrollTo: 'top',
   validate({ params }) {
-    return /^\d+$/.test(String(params.personID).split('-')[0])
+    return /^\d+$/.test(params.personID)
   },
-  asyncData: ({ $axios, params }) =>
-    $axios
-      .$get(`person/${String(params.personID).split('-')[0]}`, {
-        params: {
-          append_to_response: [
-            'movie_credits',
-            'tv_credits',
-            'external_ids',
-            'images',
-          ].join(),
-        },
-      })
-      .then((res) => ({ person: res })),
-  data: (_) => ({
-    tab: null,
-  }),
+  asyncData: async ({ $axios, params }) => {
+    const person = await $axios.$get(`person/${params.personID}`, {
+      params: {
+        append_to_response: [
+          'movie_credits',
+          'tv_credits',
+          'external_ids',
+          'images',
+        ].join(','),
+      },
+    })
+
+    const tabs = [
+      {
+        title: 'Info',
+        to: `/people/${params.personID}`,
+        icon: 'mdi-information-variant',
+      },
+      {
+        title: 'Movies',
+        to: `/people/${params.personID}/movies`,
+        icon: 'mdi-movie-open',
+        disabled:
+          person.movie_credits.cast.length < 1 &&
+          person.movie_credits.crew.length < 1,
+      },
+      {
+        title: 'Series',
+        to: `/people/${params.personID}/series`,
+        icon: 'mdi-television-classic',
+        disabled:
+          person.tv_credits.cast.length < 1 &&
+          person.tv_credits.crew.length < 1,
+      },
+      {
+        title: 'Images',
+        to: `/people/${params.personID}/images`,
+        icon: 'mdi-image-multiple',
+        disabled: person.images.profiles.length < 1,
+      },
+    ]
+
+    return { person, tabs }
+  },
   fetch: async ({ store }) => {
     await store.dispatch('FETCH_CONFIGS')
     await store.dispatch('FETCH_GENRES')
@@ -170,42 +99,13 @@ export default {
       title: this.person.name,
     }
   },
-  computed: {
-    tabs() {
-      return {
-        info: {
-          title: 'Info',
-          to: '#tab__info',
-          icon: 'mdi-information-variant',
-        },
-        movies: {
-          title: 'Movies',
-          to: '#tab__movies',
-          icon: 'mdi-movie-open',
-          disabled:
-            this.person.movie_credits.cast.length < 1 &&
-            this.person.movie_credits.crew.length < 1,
-        },
-        series: {
-          title: 'Series',
-          to: '#tab__series',
-          icon: 'mdi-television-classic',
-          disabled:
-            this.person.tv_credits.cast.length < 1 &&
-            this.person.tv_credits.crew.length < 1,
-        },
-        images: {
-          title: 'Images',
-          to: '#tab__images',
-          icon: 'mdi-image-multiple',
-          disabled: this.person.images.profiles.length < 1,
-        },
-      }
+  methods: {
+    getTab(title) {
+      return this.tabs.find((item) => item.title === title)
     },
   },
   mounted() {
     this.$store.commit('COLLAPSE_APP_BAR', true)
-    if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
   },
 }
 </script>

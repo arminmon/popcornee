@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-main.pt-0
-		v-img(
+		v-img#hero(
 			:aspect-ratio='10'
 			:src='$store.getters.imgURL(collection.backdrop_path, "backdrop", 2)'
 			:lazy-src='$store.getters.imgURL(collection.backdrop_path, "backdrop", 0)'
@@ -33,12 +33,15 @@
 
 <script>
 export default {
-  validate: ({ params }) =>
-    /^\d+$/.test(String(params.collectionID).split('-')[0]),
-  asyncData: ({ $axios, params }) =>
-    $axios
-      .$get(`collection/${String(params.collectionID).split('-')[0]}`)
-      .then((res) => ({ collection: res })),
+  scrollTo: 'top',
+  validate: ({ params }) => /^\d+$/.test(params.collectionID),
+  asyncData: async ({ $axios, params }) => {
+    const collection = await $axios
+      .$get(`collection/${params.collectionID}`)
+      .then((res) => ({ collection: res }))
+
+    return collection
+  },
   fetch: async ({ store }) => {
     await store.dispatch('FETCH_CONFIGS')
     await store.dispatch('FETCH_GENRES')

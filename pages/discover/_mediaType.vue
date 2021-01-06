@@ -113,6 +113,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  scrollTo: 'top',
   validate: ({ params, query, redirect }) => {
     switch (params.mediaType) {
       case 'movies':

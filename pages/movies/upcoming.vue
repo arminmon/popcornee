@@ -6,6 +6,7 @@ v-main
 
 <script>
 export default {
+  scrollTo: 'top',
   asyncData: ({ $axios }) =>
     $axios.$get('movie/upcoming').then((res) => ({ movies: res })),
   fetch: async ({ store }) => {

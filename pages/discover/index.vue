@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  scrollTo: 'top',
   head: {
     title: 'Discover',
   },

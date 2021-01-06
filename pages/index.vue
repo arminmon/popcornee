@@ -6,6 +6,7 @@ v-main
 
 <script>
 export default {
+  scrollTo: 'top',
   asyncData: ({ $axios }) =>
     $axios.$get('trending/all/day').then((res) => ({ all: res })),
   fetch: async ({ store }) => {

@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-main.pt-0
-		v-img(
+		v-img#hero(
 			:aspect-ratio='10'
 			src='/null.png'
 			:gradient='$utils.gradient("to top", [{ alpha: "1", pos: "0%" }, { alpha: "0", pos: "100%" }])'
@@ -14,57 +14,42 @@
 						v-img(:src='$store.getters.imgURL(network.images.logos[0].file_path, "logo", 4)' :lazy-src='$store.getters.imgURL(network.images.logos[0].file_path, "logo", 4)')
 					v-col.px-6(cols='12' :sm='network.images.logos[0].file_path ? 9 : 12')
 						h1.display-1 {{network.name}}
-		v-sheet(tile elevation='0')
+		v-sheet#tabs(tile elevation='0')
 			v-container.py-0(:class='{ "px-0": $vuetify.breakpoint.xsOnly }')
-				v-tabs#tabs(v-model='tab' show-arrows grow center-active icons-and-text background-color="transparent")
+				v-tabs(show-arrows grow center-active icons-and-text background-color="transparent")
 					v-tabs-slider
-					v-tab(v-for='tab in tabs' :key='tab.to' nuxt replace :to='tab.to' v-if='!tab.disabled')
+					v-tab(v-for='tab in tabs' :key='tab.title' nuxt :to='tab.to' :exact='tab.exact' v-if='!tab.disabled')
 						span {{tab.title}}
 						v-icon {{tab.icon}}
-		v-tabs-items(v-model='tab')
-			//- Info Tab ——————————————————————————————————————————————————————————————————————————— -//
-			v-tab-item(value='tab__info')
-				//- Info Table
-				v-container
-					v-simple-table.py-6.info-table
-						tbody
-							tr(v-if='network.headquarters')
-								td.text-right.caption.font-weight-light Headquarters
-								td {{network.headquarters}}
-							tr(v-if='network.origin_country')
-								td.text-right.caption.font-weight-light Country of Origin
-								td
-									v-chip {{network.origin_country}}
-				//- Images ——————————————————————————————————————————————————————————————————————————— -//
-				v-tab-item(value='tab__images' v-if='network.images.logos.length > 0')
-					v-container
-						v-row(dense justify='center')
-							v-col(v-for='image in network.images.logos' :key='image.file_path' cols='6' sm='4' md='3' lg='2' xl='1')
-								v-hover(v-slot:default='{ hover }')
-									v-card.pa-3(hover :href='`${$store.getters.imgURL(image.file_path,"logo",6)}`' target='_blank')
-										v-img(:src='$store.getters.imgURL(image.file_path, "logo", 3)' :lazy-src='$store.getters.imgURL(image.file_path, "logo", 0)' contain aspect-ratio='1')
-											template(v-slot:placeholder)
-												v-row.pa-3.ma-0.fill-height(justify='center' align='center')
-													v-progress-circular(indeterminate)
-											v-row.pa-3.ma-0.fill-height(justify='center' align='center')
-												v-fab-transition
-													v-btn(v-show='hover' fab small)
-														v-icon mdi-download
+		nuxt-child(:key='$route.path' :network='network')
 </template>
 
 <script>
 export default {
-  validate: ({ params }) =>
-    /^\d+$/.test(String(params.networkID).split('-')[0]),
-  asyncData: ({ $axios, params }) =>
-    $axios
-      .$get(`network/${String(params.networkID).split('-')[0]}`, {
-        params: { append_to_response: 'images' },
-      })
-      .then((res) => ({ network: res })),
-  data: (_) => ({
-    tab: null,
-  }),
+  scrollTo: 'top',
+  validate: ({ params }) => /^\d+$/.test(params.networkID),
+  asyncData: async ({ $axios, params }) => {
+    const network = await $axios.$get(`network/${params.networkID}`, {
+      params: { append_to_response: ['images'].join(',') },
+    })
+
+    const tabs = [
+      {
+        title: 'Info',
+        to: `/networks/${params.networkID}`,
+        icon: 'mdi-information-variant',
+        exact: true,
+      },
+      {
+        title: 'Images',
+        to: `/networks/${params.networkID}/images`,
+        icon: 'mdi-image-multiple',
+        disabled: this.network.images.logos.length < 1,
+      },
+    ]
+
+    return { network, tabs }
+  },
   fetch: async ({ store }) => {
     await store.dispatch('FETCH_CONFIGS')
   },
@@ -73,26 +58,13 @@ export default {
       title: this.network.name,
     }
   },
-  computed: {
-    tabs() {
-      return [
-        {
-          title: 'Info',
-          to: '#tab__info',
-          icon: 'mdi-information-variant',
-        },
-        {
-          title: 'Images',
-          to: '#tab__images',
-          icon: 'mdi-image-multiple',
-          disabled: this.network.images.logos.length < 1,
-        },
-      ]
+  methods: {
+    getTab(title) {
+      return this.tabs.find((item) => item.title === title)
     },
   },
   mounted() {
     this.$store.commit('COLLAPSE_APP_BAR', true)
-    if (this.$route.hash === '') this.$router.replace({ hash: '#tab__info' })
   },
 }
 </script>
