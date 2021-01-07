@@ -4,7 +4,7 @@
 			:aspect-ratio='10'
 			:src='$store.getters.imgURL(collection.backdrop_path, "backdrop", 2)'
 			:lazy-src='$store.getters.imgURL(collection.backdrop_path, "backdrop", 0)'
-			:gradient='$utils.gradient("to top", [{ alpha: "1", pos: "0%" }, { alpha: ".55", pos: "100%" }])'
+			gradient='to top, rgba(var(--v-bg--rgb),1) 15%, rgba(var(--v-bg--rgb),.7) 100%'
 			)
 			template(v-slot:placeholder)
 				v-row.pa-3.ma-0.fill-height(justify='end' align='start')
@@ -26,7 +26,7 @@
 											v-btn(v-show='hover' fab small :href='`${$store.getters.imgURL(collection.poster_path,"poster",6)}`' target='_blank')
 												v-icon mdi-download
 		//- Collection
-		v-sheet(flat)
+		v-sheet(elevation='0')
 			v-container(fluid)
 				media-iterator(:media='collection.parts' default-view='wide')
 </template>

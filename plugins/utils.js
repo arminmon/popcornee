@@ -1,16 +1,4 @@
 export default function ({ $vuetify }, inject) {
-  const gradient = (dir = '', stops = []) =>
-    dir !== '' && stops.length > 0
-      ? `${dir}, ${stops
-          .map(
-            (stop) =>
-              `rgba(${$vuetify.theme.dark ? '30,30,30' : '255,255,255'},${
-                stop.alpha
-              }) ${stop.pos}`
-          )
-          .join()}`
-      : null
-
   const media = {
     views: {
       narrow: {
@@ -36,5 +24,5 @@ export default function ({ $vuetify }, inject) {
       },
     },
   }
-  inject('utils', { gradient, media })
+  inject('utils', { media })
 }
