@@ -24,6 +24,7 @@ export default function ({ app }) {
           success: colors.green.accent2,
         },
       },
+      options: { customProperties: false, variations: true },
     },
     // lang: {
     // 	t: (key, ...params) => app.i18n.t(key, params)
