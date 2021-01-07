@@ -44,6 +44,10 @@ export default {
     debug: false,
   },
 
+  build: {
+    extractCSS: true,
+  },
+
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
