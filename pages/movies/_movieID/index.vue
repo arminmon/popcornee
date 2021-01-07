@@ -84,7 +84,6 @@ div
 
 <script>
 export default {
-  scrollTo: 'top',
   props: {
     movie: {
       type: Object,

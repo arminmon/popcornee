@@ -13,7 +13,6 @@
 
 <script>
 export default {
-  scrollTo: 'top',
   props: {
     network: {
       type: Object,

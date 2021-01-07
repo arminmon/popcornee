@@ -23,7 +23,6 @@
 
 <script>
 export default {
-  scrollTo: '#tabs',
   props: {
     person: {
       type: Object,

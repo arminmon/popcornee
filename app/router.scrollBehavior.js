@@ -3,13 +3,17 @@ import goTo from 'vuetify/es5/services/goto'
 export default (to, from, savedPosition) => {
   let position = null
 
-  const scrollTo = String(
-    to.matched[to.matched.length - 1].components.default.options.scrollTo
-  )
+  const page = to.matched
+    .filter((i) => i.components.default.options.scrollTo !== undefined)
+    .pop()
 
-  if (scrollTo && scrollTo.startsWith('#')) position = scrollTo
+  if (page) {
+    const scrollTo = page.components.default.options.scrollTo
 
-  if (scrollTo === 'top') position = 0
+    if (scrollTo && scrollTo.startsWith('#')) position = scrollTo
+
+    if (scrollTo === 'top') position = 0
+  }
 
   if (savedPosition) position = savedPosition
 

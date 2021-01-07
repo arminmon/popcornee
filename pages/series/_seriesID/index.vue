@@ -102,7 +102,6 @@ div
 
 <script>
 export default {
-  scrollTo: 'top',
   props: {
     series: {
       type: Object,
