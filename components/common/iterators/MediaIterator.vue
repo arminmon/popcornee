@@ -82,7 +82,7 @@ export default {
       try {
         this.fetching = true
         this.page++
-        const response = await this.$api.tmdb.get(this.resource, {
+        const response = await this.$axios.$get(this.resource, {
           params: {
             ...this.query,
             page: this.page,

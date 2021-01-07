@@ -265,10 +265,10 @@ export default {
       this.drawer = !this.drawer
     },
     async startSearch() {
-      if (this.search.query !== '' && this.search.query != null)
+      if (this.search.query)
         try {
           this.search.loading = true
-          const response = await this.$api.tmdb.get(
+          const response = await this.$axios.$get(
             `search/${this.search.mode.value}`,
             {
               params: {
@@ -280,7 +280,8 @@ export default {
           this.searched.mode = this.search.mode
           this.search.loading = 'success'
           this.search.results = response.results
-          if (response.results.length === 0) throw new Error('empty')
+          if (response.results.length === 0)
+            throw new Error('Nothing was found')
         } catch (e) {
           this.search.fetching = 'error'
         } finally {
